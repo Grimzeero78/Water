@@ -2,13 +2,14 @@
 
 **Looks like a normal tap. Works like a guardian. One knob on top does everything — and the water always ends closed.**
 
-- **Press** the knob down — a quick rinse under 10 seconds that closes itself (a dashpot bleeds it shut).
-- **Pull** the knob up — a 3-minute wash; a hidden escapement counts it down and shuts off at zero.
-- **Turn** the knob — opens like any tap and sets how much water passes. Turn back to close.
+- **Turn** the knob — sets a **flow limit** (how much water may pass). Turning alone never runs water: a second valve below stays shut. *That is the safety.*
+- **Press** the knob down — a quick rinse under 10 seconds that closes itself. Or just **hold** it down while you need water.
+- **Pull** the knob up — a 3-minute wash that bleeds itself shut at zero.
+- **Turn fully back to zero** — the tap is *locked*: even pressing gives nothing.
 
-No battery, no electronics, no dial, no display — and no way to leave the water running.
+Two valves sit **in series** inside the tap head: your turn only sets a limit, a spring poppet decides if any water passes, and two oil dashpots (the same idea as a door closer) time the auto-close. No battery, no electronics, no dial, no clockwork — and **no combination of knob positions can leave the water running**.
 
-![TapTamer device on a tap spout](guide-assets/cover_device.png)
+![TapTamer, washing at a 7.6 L/min limit](screenshot.png)
 
 ## Try it in 3D
 
@@ -16,44 +17,47 @@ No battery, no electronics, no dial, no display — and no way to leave the wate
   `https://grimzeero78.github.io/Water/` (the page is `index.html`).
 - **Offline:** just open `index.html` — it is a single self-contained file.
 
-In the simulator: **press** the top knob (or the PRESS button) for an 8-second
-self-closing rinse, **pull** it up for the 3-minute wash, and **turn** it — drag the
-knob sideways or use the flow slider — to open it like a normal tap. Ghost view
-shows the dashpot, latch, escapement, cam drum and flow spindle working inside.
-Press any running tap again (or STOP) to close it early.
+In the simulator: **drag the knob sideways** (or use the slider) to set the limit,
+**click** it for the 8-second rinse, **drag down and hold** for water-while-held,
+**drag up** for the 3-minute wash. Keys: `1` press · `2` pull · `←/→` turn ·
+`L` lock · `0` stop. Ghost view (default) shows the limiter, poppet, both dashpots
+and the latch working inside. Buttons: PRESS / PULL / LOCK / STOP.
+
+Worst case at an 8 L/min limit: one 3-minute wash ≈ **24 L**. A normal tap left
+running for an hour wastes about **480 L**.
 
 ## What's in this repo
 
 | File | What it is |
 |---|---|
-| `index.html` | Interactive 3D simulator — timed runs, ghost-view mechanism, water usage readouts |
+| `index.html` | Interactive 3D simulator — press / pull / turn with the series-valve safety, ghost view, water-usage readouts |
 | `prototype.html` | All 6 printable parts, exploded / assembled, viewable in any browser |
-| `stl/` | 3D-printable STL parts: 1 wet body, 2 poppet valve, 3 latch lever, 4 head drum, 5 dial knob, 6 cam drum |
-| `build-guide.pdf` | Workshop manual: tools, materials, 9 build steps, tap fitting, calibration, troubleshooting, savings |
+| `stl/` | 3D-printable STL parts: 1 wet body, 2 top knob, 3 flow limiter, 4 poppet valve, 5 short dashpot kit, 6 long dashpot kit + latch |
+| `build-guide.pdf` | Workshop manual: tools, materials, build steps, fitting, calibration, troubleshooting, savings |
 | `TapTamer.scad` | Parametric OpenSCAD source model (millimetres) |
 | `guide-assets/` | Diagrams and renders used by the guide |
 
-> **Note:** the printable-parts set (`stl/`, `TapTamer.scad`, `build-guide.pdf`)
-> still documents the earlier dial-top variant. The press / pull / turn redesign
-> ships first in the simulator; the parts and guide will be updated to match.
-
 ## How it works (pure mechanics)
 
-1. **Press** — the knob dips and opens the poppet directly; when you let go, a small
-   dashpot bleeds the pressure away and the closing spring shuts the valve within seconds.
-2. **Pull** — a latch holds the valve open while a hidden escapement ticks off 3 minutes;
-   a cam drum rides down as it unwinds and trips the latch at zero.
-3. **Turn** — a flow spindle lifts off its seat like any screw-down tap; you decide how
-   much water passes. Turn back to close.
-4. **Always ends closed** — there is no stay-on position: even fully turned open, a
-   mechanical safety trips the valve shut at 10 minutes.
+1. **Turn = limit only.** The knob spins a needle cartridge on its own seat. It can
+   never let water through by itself — it only decides how wide the path *may* be.
+   At zero the path is closed and the tap is locked.
+2. **Press = short rinse.** Pushing the knob opens the poppet against its spring.
+   A small dashpot meters the return, so the rinse shuts itself off in about 8
+   seconds — even if you walk away. Holding the knob keeps water flowing only
+   while you hold it.
+3. **Pull = 3-minute wash.** A latch catches the poppet; a larger dashpot bleeds
+   slowly for about 3 minutes, then the spring wins and the valve closes. No gears,
+   no escapement, nothing to wind.
+4. **Always ends closed.** The poppet is the only valve that can pass water, and it
+   is spring-closed in every position. Turn, press, pull — every path ends shut.
 
 ## Fitting on your tap
 
-Installs like any normal basin tap: PTFE tape on the 1/2" tail thread, drop it
+Installs like any normal pillar tap: PTFE tape on the 1/2" tail thread, drop it
 through the basin or sink hole, tighten the back-nut, and connect the flexible
-supply hose. The whole mechanism lives inside the column — nothing to wire,
-nothing to charge.
+supply hose. The whole mechanism lives inside the tap body — nothing to wire,
+nothing to charge, nothing sticking on the pipe.
 
 ## License
 

@@ -1,186 +1,202 @@
 // ============================================================
-//  TapTamer  -  Mechanical Auto-Off Tap Timer  (V3)
-//  Screws onto a kitchen / bathroom tap spout in place of the
-//  aerator. Twist the dial -> water on + clockwork counting.
-//  At zero the cam trips the latch, the closing spring snaps
-//  the poppet shut. No battery, no electronics, never stays on.
+//  TapTamer  -  Normal-looking self-closing tap  (V4)
+//  A pillar tap whose whole mechanism lives inside the body.
+//  ONE knob on top:  TURN = flow limit only (never opens water),
+//  PRESS = ~8 s self-closing rinse,  PULL = ~3 min wash,
+//  TURN to zero = lock.  Two valves in series + two oil dashpots.
+//  No clockwork, no battery, no electronics, always ends closed.
 //
 //  Units: millimetres.  Print notes at bottom of file.
-//  View: set mode to "assembled", "exploded" or "printbed"
+//  View: set mode to "assembled", "exploded" or "printbed".
+//  Parts match stl/1..6 and prototype.html.
 // ============================================================
 
 /* ---------- PARAMETERS ---------- */
-mode          = "assembled";   // assembled | exploded | printbed
+mode        = "assembled";   // assembled | exploded | printbed
 
-// tap connection (measure your spout thread first!)
-spout_thread  = "M22x1";       // M22x1 (most EU) | M24x1 | 55/64-27 (US male)
-thread_d      = 22;            // nominal thread diameter
-thread_pitch  = 1;
-thread_len    = 8;
+// tap fitting (basin / sink mounting, like any pillar tap)
+tail_thread = "G1/2";        // 1/2" BSP tail through the basin hole
+tail_d      = 20;            // turned down from stock or brass insert
+backnut_d   = 30;
 
-// valve
-orifice_d     = 8;             // valve seat orifice
-poppet_d      = 17;            // poppet disc (PTFE faced)
-lift          = 2.2;           // valve opening lift
-body_od       = 34;            // wet-body outer diameter
-body_len      = 44;
+// body column
+flange_d    = 64;
+flange_t    = 8;
+shank_d0    = 38;            // bottom of column
+shank_d1    = 34;            // top of column
+shank_len   = 130;
+head_d0     = 32;
+head_d1     = 43;
+head_len    = 46;
+bore_d      = 24;            // main waterway
 
-// head (timer drum, stays dry)
-head_od       = 60;
-head_len      = 40;
-movement_d    = 56;            // salvaged egg-timer / oven-timer movement
-movement_t    = 18;
+// gooseneck spout
+spout_od    = 19;
+spout_id    = 12;
 
-// dial
-dial_d        = 50;
-dial_t        = 12;
-scale_max_min = 10;            // 0..10 minutes across 60 degrees
+// knob
+knob_d      = 42;
+knob_h      = 30;
+socket_sq   = 6.4;           // square drive from knob to limiter
+
+// valve 1: flow limiter (your TURN)
+limiter_seat_d  = 22;
+limiter_needle0 = 22;        // cone, wide end
+limiter_needle1 = 8;
+limiter_stem_d  = 9;
+
+// valve 2: poppet (press / pull)
+poppet_d    = 28;            // disc, PTFE faced
+poppet_stem = 6;
+valve_lift  = 2.2;
+
+// dashpots (oil + orifice => the timers)
+dash_short_od = 18;          // ~8 s rinse return
+dash_short_h  = 20;
+dash_long_od  = 21;          // ~3 min wash release
+dash_long_h   = 40;
+orifice_short = 1.8;         // print, then trim with the needle in the guide
+orifice_long  = 1.1;
 
 $fn = 72;
 
-/* ---------- HELPERS ---------- */
-// simple printable v-thread (visual approximation, test-fit first)
-module v_thread(d, pitch, turns) {
-    h = pitch * turns;
-    linear_extrude(height = h, twist = 360 * turns, slices = turns * 24)
-        translate([d/2 - 0.4, 0]) circle(r = pitch * 0.42, $fn = 6);
-}
-
-module knurl(r, h, teeth = 24) {
-    for (i = [0 : teeth - 1])
-        rotate([0, 0, i * 360 / teeth])
-            translate([r, 0, h/2]) cylinder(d = 3.2, h = h, center = true);
-}
-
-/* ---------- WET BODY (brass, or print in PETG for prototyping) ---------- */
-module wet_body() {
-    difference() {
-        union() {
-            // main barrel
-            cylinder(d = body_od, h = body_len);
-            // head mounting flange (top)
-            translate([0, 0, body_len])
-                cylinder(d = head_od - 6, h = 4);
-        }
-        // through bore (water path)
-        translate([0, 0, -1]) cylinder(d = orifice_d + 9, h = body_len + 6);
-        // seat orifice (restriction where poppet closes)
-        translate([0, 0, 12]) cylinder(d1 = orifice_d, d2 = orifice_d, h = 3);
-        // inlet socket: female thread up (screws onto spout)
-        translate([0, 0, body_len - thread_len + 4])
-            cylinder(d = thread_d + 1.2, h = thread_len + 6);
-        translate([0, 0, body_len - thread_len + 2]) 
-            v_thread(d = thread_d, pitch = thread_pitch, turns = thread_len / thread_pitch);
-        // outlet: male thread down for aerator / adapter
-        translate([0, 0, -0.1]) v_thread(d = 24, pitch = 1, turns = 5);
-    }
-}
-
-/* ---------- POPPET VALVE (PTFE disc + steel stem) ---------- */
-module poppet() {
+/* ---------- MODULES ---------- */
+module wet_body() {                     // 1 - hollow column + head + spout
+  difference() {
     union() {
-        cylinder(d = poppet_d, h = 4);                       // disc
-        translate([0, 0, 4]) cylinder(d = 6, h = 14);        // stem
-        translate([0, 0, 16]) cylinder(d = 19, h = 2.5);     // latch flange
+      cylinder(d = flange_d, h = flange_t);                          // base flange
+      translate([0,0,flange_t])
+        cylinder(d1 = shank_d0, d2 = shank_d1, h = shank_len);       // column
+      translate([0,0,flange_t+shank_len])
+        cylinder(d1 = head_d0, d2 = head_d1, h = head_len);          // tapered head
+      translate([0,0,flange_t+shank_len+head_len])
+        cylinder(d = head_d1+2, h = 4);                              // head cap
+      translate([0,0,0]) spout_shell();                              // gooseneck
     }
+    translate([0,0,flange_t]) cylinder(d = bore_d, h = shank_len+head_len);
+    translate([0,0,-1])      cylinder(d = 22, h = flange_t+2);       // inlet
+    spout_channel();
+  }
 }
 
-/* ---------- CLOSING SPRING (buy: 12 x 1.2 x 25 mm, ~30 N) ---------- */
-module closing_spring() {
-    coils = 7; r = 6; h = 25;
-    for (i = [0 : coils * 8])
-        rotate([0, 0, i * 360 / (coils * 8)])
-            translate([r, 0, i * h / (coils * 8)]) sphere(d = 1.2, $fn = 8);
+module spout_shell() {
+  // arc: leaves the head, rises, tips over and points down
+  pts = [[8,0,153],[24,0,168],[40,0,172],[54,0,165],[62,0,154],[66,0,146],[66,0,138]];
+  for(i=[0:len(pts)-2])
+    hull(){ translate(pts[i]) sphere(d=spout_od);
+            translate(pts[i+1]) sphere(d=spout_od); }
+  translate([66,0,132]) cylinder(d = 17, h = 8);                     // aerator boss
 }
 
-/* ---------- LATCH LEVER (print in PETG, 3 mm thick) ---------- */
-module latch() {
-    linear_extrude(height = 3) union() {
-        hull() { translate([0, 0]) circle(d = 7); translate([16, 0]) circle(d = 5); }
-        // hook under the flange
-        translate([17.5, -3]) square([4, 6]);
-        // tail the cam push-rod presses on
-        translate([1.5, 2])  square([4, 7]);
-    }
+module spout_channel() {
+  pts = [[0,0,160],[8,0,153],[24,0,168],[40,0,172],[54,0,165],[62,0,154],
+         [66,0,146],[66,0,130]];
+  for(i=[0:len(pts)-2])
+    hull(){ translate(pts[i]) sphere(d=spout_id);
+            translate(pts[i+1]) sphere(d=spout_id); }
 }
 
-/* ---------- HEAD DRUM (houses the clockwork, stays dry) ---------- */
-module head() {
-    difference() {
-        union() {
-            cylinder(d = head_od, h = head_len);                 // drum
-            translate([0, 0, -6]) cylinder(d = head_od - 10, h = 6); // gland boss
-        }
-        // cavity for movement
-        translate([0, 0, 4]) cylinder(d = movement_d, h = head_len);
-        // front opening for the dial shaft
-        translate([0, 0, -1]) cylinder(d = 10, h = 6);
-        // sealed hole for cam push-rod (bottom)
-        translate([0, 0, -7]) cylinder(d = 5, h = 8);
-    }
-}
-
-/* ---------- DIAL KNOB (twist to 3 or 7, scale 0-10 min / 60 deg) ---------- */
-module dial_knob() {
-    difference() {
-        union() {
-            cylinder(d = dial_d, h = dial_t);
-            translate([0, 0, dial_t/2]) knurl(r = dial_d/2 - 0.6, h = dial_t);
-        }
-        translate([0, 0, -1]) cylinder(d = 8, h = dial_t + 2);  // shaft fitting (square-file to fit)
-        // engraved index notch
-        rotate([0, 0, 0]) translate([dial_d/2 - 4, 0, dial_t - 1.2]) cube([6, 2, 2], center = true);
-    }
-}
-
-/* ---------- CAM DRUM (on movement output shaft) ---------- */
-module cam_drum() {
+module top_knob() {                     // 2 - dome + ribs + square socket
+  difference() {
     union() {
-        cylinder(d = 24, h = 14);
-        translate([0, -14.5, 7]) cube([8, 6, 10], center = true);   // lobe
-        translate([0, -16, 7]) rotate([90, 0, 0]) cylinder(d = 4, h = 6, center = true); // push-rod pin
+      cylinder(d = knob_d,   h = 7);                                  // collar
+      translate([0,0,7]) rotate_extrude()
+        polygon([[0,0],[19,0],[20,5],[14,17],[10,20],[5,22],[0,23]]); // dome
+      for(a=[0:36:359]) rotate([0,0,a])
+        translate([19.2,0,12]) cube([3.2,4,11], center=true);         // grip ribs
     }
+    translate([-socket_sq/2, -socket_sq/2, -1])
+      cube([socket_sq, socket_sq, 18]);                              // square drive socket
+    translate([0,0,-1]) cylinder(d = 10, h = 15);
+  }
 }
 
-/* ---------- ASSEMBLY ---------- */
-ex = mode == "exploded" ? 1 : 0;
+module flow_limiter() {                 // 3 - needle cartridge (turn = limit)
+  union() {
+    cylinder(d1 = limiter_needle0, d2 = limiter_needle1, h = 14);     // needle cone
+    translate([0,0,14])  cylinder(d = limiter_stem_d, h = 16);
+    translate([0,0,30])  cube([socket_sq, socket_sq, 7], center=false); // drive
+  }
+}
 
+module poppet_valve() {                 // 4 - disc + stem + latch collar
+  union() {
+    cylinder(d = poppet_d, h = 4);                                    // disc
+    translate([0,0,4])   cylinder(d = poppet_stem, h = 34);
+    translate([0,0,12])  cylinder(d = 13,  h = 3);                    // latch collar
+    translate([0,0,38])  cylinder(d = 10,  h = 3);                    // cap
+  }
+}
+
+module dashpot_kit(od, h, orifice) {    // 5/6 - tube + piston + orifice cap
+  union() {
+    difference(){ cylinder(d = od, h = h); translate([0,0,-1]) cylinder(d = od-3, h = h+2); }
+    translate([od+4,0,0]) union(){
+      cylinder(d = od-3.6, h = 5);                                    // piston
+      translate([0,0,5]) cylinder(d = 4, h = h+10);                   // rod
+    }
+    translate([2*od+8,0,0]) difference(){
+      cylinder(d = od, h = 3);                                        // orifice cap
+      translate([0,0,-1]) cylinder(d = orifice, h = 5);
+    }
+  }
+}
+
+module latch_lever() {                  // part of 6 - holds the pull open
+  union() {
+    cylinder(d = 10, h = 6);                                          // pivot boss
+    translate([0,0,3]) cube([26,5,4], center=false);
+    translate([24,-5,0]) cube([4,10,6]);
+  }
+}
+
+/* ---------- LAYOUTS ---------- */
 module assembled() {
-    color("Goldenrod")        wet_body();
-    color("Silver")           translate([0, 0, 12 + lift + 14*ex]) poppet();
-    color("Gray")             translate([0, 0, 18]) closing_spring();
-    color("Crimson")          translate([-20, 2, 30]) latch();
-    color("LightSlateGray")   translate([0, 0, body_len + 4 + 18*ex]) head();
-    color("Ivory")            translate([0, 0, body_len + 10 - 6])  cam_drum();
-    color("DimGray")          translate([0, 0, body_len + 4 + head_len + 10*ex]) rotate([180, 0, 0]) dial_knob();
+  wet_body();
+  translate([0,0,22])        flow_limiter();
+  translate([0,0,95])        poppet_valve();
+  translate([0,0,132])       dashpot_kit(dash_short_od, dash_short_h, orifice_short);
+  translate([0,0,170])       dashpot_kit(dash_long_od,  dash_long_h,  orifice_long);
+  translate([0,0,198])       top_knob();
+  translate([-10.5,96,0]) rotate([0,0,90]) latch_lever();
+}
+
+module exploded() {
+  wet_body();
+  translate([-60,0,30])   flow_limiter();
+  translate([60,0,85])    poppet_valve();
+  translate([-70,0,135])  dashpot_kit(dash_short_od, dash_short_h, orifice_short);
+  translate([75,0,165])   dashpot_kit(dash_long_od,  dash_long_h,  orifice_long);
+  translate([0,0,245])    top_knob();
+  translate([-55,120,0])  rotate([0,0,90]) latch_lever();
 }
 
 module printbed() {
-    wet_body();
-    translate([45, 0, 0])   rotate([180, 0, 0]) poppet();
-    translate([45, 40, 0])  rotate([90, 0, 0]) latch();
-    translate([-45, 0, 0])  rotate([180, 0, 0]) head();
-    translate([-45, 70, 0]) dial_knob();
-    translate([0, 75, 0])   rotate([90, 0, 0]) cam_drum();
+  wet_body();
+  translate([90,0,0])     top_knob();
+  translate([150,0,0])    flow_limiter();
+  translate([190,0,0])    poppet_valve();
+  translate([230,0,0])    dashpot_kit(dash_short_od, dash_short_h, orifice_short);
+  translate([300,0,0])    dashpot_kit(dash_long_od,  dash_long_h,  orifice_long);
+  translate([370,0,0])    rotate([0,0,90]) latch_lever();
 }
 
-if (mode == "printbed") printbed();
-else assembled();
+if(mode=="assembled") assembled();
+else if(mode=="exploded") exploded();
+else printbed();
 
-/* ---------- PRINT & BUILD NOTES ----------
- *  PRINT (PETG, 0.2 mm layers, 4 walls):
- *    - wet_body, poppet, latch, cam_drum  -> PETG (hot water zone)
- *    - head, dial_knob                    -> PLA or PETG
- *  BUY, don't print:
- *    - closing spring 12 x 1.2 x 25 mm (~30 N)
- *    - 60-minute mechanical timer movement (salvage an egg timer
- *      or oven timer, or buy a replacement movement)
- *    - PTFE sheet 0.5 mm for the poppet face, O-rings 22x2 & 30x3
- *    - silicone grease (O-rings + cam gland)
- *  THREADS: the v_thread module is a visual approximation.
- *    For a watertight fit prefer buying a brass M22x1/M24x1
- *    aerator adapter and gluing/epoxying it into the body.
- *  SCALE: dial reads 0-10 minutes over 60 degrees; hard stops
- *    at 0 and 10 - the valve can never latch open.
- *  ------------------------------------------------------------
- */
+/* ---------- PRINT NOTES ----------
+ 1  wet_body        PETG, 0.2 mm layers, 4 walls, supports for the spout arc,
+                    drill/tap the tail or glue in a brass G1/2 insert.
+ 2  top_knob        PLA or PETG, no supports; socket reams to a crisp square.
+ 3  flow_limiter    PETG; the cone seals on its seat with a light lapping of
+                    silicone grease. Square drive fits the knob socket.
+ 4  poppet_valve    PETG; face the disc with a PTFE washer (or print a soft
+                    bumper) so it seals on the seat without grinding.
+ 5  short dashpot   PETG, Vase-mode-able tube; charge with silicone oil 350 cSt,
+                    orifice ~1.8 mm gives a ~8 s return - trim wider = faster.
+ 6  long dashpot    same, orifice ~1.1 mm gives ~3 min; adjust in testing.
+                    The latch lever prints in the same file, on the same bed.
+ Bought, not printed: closing spring 12x1.2x25 (~30 N), silicone oil 350 cSt,
+ M22/M24 brass adapter if adapting an existing tap body, PTFE tape, O-rings.
+ -------------------------------- */
