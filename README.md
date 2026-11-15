@@ -7,7 +7,7 @@
 - **Pull** the knob up — a 3-minute wash that bleeds itself shut at zero.
 - **Turn fully back to zero** — the tap is *locked*: even pressing gives nothing.
 
-Two valves sit **in series** inside the tap **body** (the knob is only the handle): your turn only sets a limit, a spring poppet decides if any water passes, and two oil dashpots (the same idea as a door closer) time the auto-close. No battery, no electronics, no dial, no clockwork — and **no combination of knob positions can leave the water running**.
+Two valves sit **in series** inside **one compact head cartridge** on top of the tap (the knob is only the handle). The column below is a **plain water tube — nothing goes inside it**. Your turn only sets a limit, a spring poppet decides if any water passes, and two oil dashpots (the same idea as a door closer) time the auto-close. No battery, no electronics, no dial, no clockwork — and **no combination of knob positions can leave the water running**.
 
 ![TapTamer, washing at a 7.6 L/min limit](screenshot.png)
 
@@ -39,9 +39,12 @@ running for an hour wastes about **480 L**.
 
 ## How it works (pure mechanics)
 
-1. **Turn = limit only.** The knob spins a needle cartridge on its own seat. It can
-   never let water through by itself — it only decides how wide the path *may* be.
-   At zero the path is closed and the tap is locked.
+Everything is packed into **one head cartridge** on top of a plain column — like the
+inside of a clock, except there is no clockwork: just valves, springs and oil dashpots.
+
+1. **Turn = limit only.** The knob spins a needle cartridge on its own seat at the base
+   of the head. It can never let water through by itself — it only decides how wide the
+   path *may* be. At zero the path is closed and the tap is locked.
 2. **Press = short rinse.** Pushing the knob opens the poppet against its spring.
    A small dashpot meters the return, so the rinse shuts itself off in about 8
    seconds — even if you walk away. Holding the knob keeps water flowing only
@@ -54,13 +57,13 @@ running for an hour wastes about **480 L**.
 
 ## Fitting on your tap
 
-TapTamer is a **complete replacement tap**, not a bolt-on. That is deliberate: all
-the working parts live inside the body (down the column, in the water path), so
-fitting it is simply **swapping the old tap for this one** — turn off the supply,
-undo the old tap's back-nut and lift it out, then PTFE tape on the 1/2" tail,
-drop TapTamer through the same basin hole, tighten the back-nut, connect the same
-flexible supply hose. Nothing sticks onto a pipe, nothing wires in, nothing to
-charge.
+TapTamer is a **complete replacement tap**, not a bolt-on. Because the whole mechanism
+is one head cartridge and the column is a plain pipe, there is nothing to thread into
+down the body: turn off the supply, undo the old tap's back-nut and lift it out, then
+PTFE tape on the 1/2" tail, drop TapTamer through the same basin hole, tighten the
+back-nut, connect the same flexible supply hose. **Servicing is one job too** — undo
+three lid screws and the entire cartridge lifts out for the bench. Nothing sticks onto
+a pipe, nothing wires in, nothing to charge.
 
 ## License
 

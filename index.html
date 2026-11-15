@@ -108,7 +108,7 @@
     <h3>HOW TO USE <span>TAPTAMER</span></h3>
     <ol>
       <li><b>TURN the knob sideways</b> to set a flow <em>limit</em> - how much water
-        may pass. Turning alone never runs water: a second valve below stays shut.
+        may pass. Turning alone never runs water: a second valve behind it stays shut.
         <em>That is the safety.</em></li>
       <li><b>PRESS the knob down</b> for a quick rinse that closes itself in about
         8 seconds - or simply <b>hold</b> it down while you need water.</li>
@@ -116,9 +116,10 @@
         shut at zero. <em>No clockwork, no dial, no electronics.</em></li>
     </ol>
     <div class="key">Turn fully back to zero and the tap is <em>locked</em> -
-      even pressing gives nothing. The knob is only the handle: the valves and
-      dashpots live <em>inside the body</em>, in the water path. TapTamer is a whole
-      replacement tap - fitting it is just swapping the old tap for this one.
+      even pressing gives nothing. The knob is only the handle: <em>everything lives
+      in one head cartridge</em> on top - the column below is a plain pipe with nothing
+      inside it. TapTamer is a whole replacement tap: fitting is one swap, servicing
+      is one lid.
       Keys: <em>1</em> press &middot; <em>2</em> pull &middot;
       <em>&larr;/&rarr;</em> turn &middot; <em>L</em> lock &middot; <em>0</em> stop</div>
     <button id="coachOk">GOT IT - LET ME TRY</button>
@@ -127,7 +128,7 @@
 
 <div class="topbar">
   <div class="logo">TAP<b>TAMER</b></div>
-  <div class="tag">looks like a normal tap &middot; no clockwork &middot; turn never opens by itself &middot; always ends closed</div>
+  <div class="tag">looks like a normal tap &middot; whole mechanism in one head &middot; turn never opens water &middot; always ends closed</div>
   <div class="spacer"></div>
   <button class="btn on" id="bXray">SHELL: GHOST</button>
   <button class="btn on" id="bSound">SOUND: ON</button>
@@ -152,24 +153,26 @@
   <div class="kv"><span>Session total</span><span class="v" id="uTot">0.0 L</span></div>
 
   <div class="note">
-    Two valves <em>in series</em> inside the body: your <em>turn</em> only sets a limit, the spring poppet
-    below it decides if any water passes - so a turn can never be left open. Press = a
-    self-closing 8 s rinse, pull = a 3-minute wash, both shut themselves off. Turn to
-    zero and even pressing gives nothing. The knob is just the handle - nothing hangs
-    on a pipe: this is a <em>complete replacement tap</em>, fitted by swapping the old tap
-    out (same basin hole, same 1/2&quot; tail, same hose). A normal tap left running an
-    hour wastes about 480 L - TapTamer's worst case is one 3-minute wash, about 24 L.
+    Two valves <em>in series</em> packed into one compact head on top: your <em>turn</em> only
+    sets a limit, the spring poppet behind it decides if any water passes - so a turn can
+    never be left open. Press = a self-closing 8 s rinse, pull = a 3-minute wash, both
+    shut themselves off. Turn to zero and even pressing gives nothing. Nothing hangs on a
+    pipe and nothing sits down the column - the whole mechanism is <em>one cartridge</em> you
+    drop into the head, so fitting is one tap-swap and servicing is one lid (same basin
+    hole, same 1/2&quot; tail, same hose). A normal tap left running an hour wastes about
+    480 L - TapTamer's worst case is one 3-minute wash, about 24 L.
   </div>
 </div>
 
 <div class="legend" id="legend">
-  <h4>INSIDE THE TAP (GHOST VIEW) - TWO VALVES IN SERIES</h4>
+  <h4>INSIDE THE HEAD (GHOST VIEW) - TWO VALVES IN SERIES, ONE CARTRIDGE</h4>
+  <div class="lg"><span class="dot" style="background:#8fa0b5"></span>Plain column - just a water tube, nothing inside</div>
   <div class="lg"><span class="dot" style="background:#2f8f83"></span>Flow limiter - your turn sets how much may pass</div>
   <div class="lg"><span class="dot" style="background:#aab3bd"></span>Poppet valve + spring - the real open/close</div>
   <div class="lg"><span class="dot" style="background:#d4a017"></span>Short dashpot - bleeds a press rinse shut in ~8 s</div>
   <div class="lg"><span class="dot" style="background:#b98a2f"></span>Long dashpot - bleeds a 3-min wash shut at zero</div>
   <div class="lg"><span class="dot" style="background:#cc4444"></span>Latch - holds the pull-wash open</div>
-  <div class="lg"><span class="dot" style="background:#4db8ff"></span>Water path - up the column, out of the spout</div>
+  <div class="lg"><span class="dot" style="background:#4db8ff"></span>Water path - up the plain column, through both valves, out of the spout</div>
 </div>
 
 <div class="deck">
@@ -236,7 +239,7 @@ scene.background=new THREE.Color(0x11161d);
 scene.fog=new THREE.Fog(0x11161d,70,160);
 
 var camera=new THREE.PerspectiveCamera(45,window.innerWidth/window.innerHeight,0.1,400);
-var camT={r:44,theta:0.55,phi:1.42,target:new THREE.Vector3(0,9.5,0)};
+var camT={r:44,theta:0.55,phi:1.42,target:new THREE.Vector3(0,10.3,0)};
 function placeCam(){
   var sp=Math.sin(camT.phi),x=camT.r*sp*Math.sin(camT.theta),y=camT.r*Math.cos(camT.phi),z=camT.r*sp*Math.cos(camT.theta);
   camera.position.set(camT.target.x+x,camT.target.y+y,camT.target.z+z);
@@ -299,26 +302,26 @@ var waterFloor=new THREE.Mesh(new THREE.PlaneGeometry(35.4,25.4),
   new THREE.MeshStandardMaterial({color:0x2c5a78,transparent:true,opacity:0.55,roughness:0.1}));
 waterFloor.rotation.x=-Math.PI/2; waterFloor.position.set(0,0.1,1); scene.add(waterFloor);
 
-/* ---------------- the tap: a normal pillar tap, knob on top ---------------- */
+/* ------- the tap: plain column below, ALL mechanism in one head ------- */
 var TAPZ=-6.2;                                   // spout mouth lands over the basin
 var tap=new THREE.Group(); tap.position.set(0,0,TAPZ); scene.add(tap);
 
 var flange=new THREE.Mesh(new THREE.CylinderGeometry(2.9,3.2,1.0,36),M.chrome);
 flange.position.y=0.5; tap.add(flange);
-var shank=new THREE.Mesh(new THREE.CylinderGeometry(1.55,1.8,12.8,32),M.chrome);
-shank.position.y=7.4; tap.add(shank);                            // 1.0 .. 13.8
-var head=new THREE.Mesh(new THREE.CylinderGeometry(2.15,1.6,4.4,36),M.chrome);
-head.position.y=16.0; tap.add(head);                             // 13.8 .. 18.2
-var headCap=new THREE.Mesh(new THREE.CylinderGeometry(2.2,2.15,0.5,36),M.chrome);
-headCap.position.y=18.45; tap.add(headCap);                      // 18.2 .. 18.7
+var shank=new THREE.Mesh(new THREE.CylinderGeometry(1.6,1.7,13.0,32),M.chrome);
+shank.position.y=7.5; tap.add(shank);                            // 1.0 .. 14.0  PLAIN pipe
+var head=new THREE.Mesh(new THREE.CylinderGeometry(2.7,2.2,5.6,36),M.chrome);
+head.position.y=16.8; tap.add(head);                             // 14.0 .. 19.6  mechanism head
+var headCap=new THREE.Mesh(new THREE.CylinderGeometry(2.85,2.7,0.4,36),M.chrome);
+headCap.position.y=19.8; tap.add(headCap);                       // 19.6 .. 20.0  service lid
 
-// gooseneck spout: leaves the head and arches over the basin
+// gooseneck spout: leaves the head high and arches over the basin
 var spoutCurve=new THREE.CatmullRomCurve3([
-  new THREE.Vector3(0,15.6,1.5),
-  new THREE.Vector3(0,17.5,3.0),
-  new THREE.Vector3(0,17.9,5.4),
-  new THREE.Vector3(0,17.0,7.1),
-  new THREE.Vector3(0,15.9,7.55),
+  new THREE.Vector3(0,18.6,2.3),
+  new THREE.Vector3(0,19.9,3.3),
+  new THREE.Vector3(0,20.1,5.6),
+  new THREE.Vector3(0,18.9,7.1),
+  new THREE.Vector3(0,17.0,7.55),
   new THREE.Vector3(0,15.5,7.6)
 ]);
 var spoutTube=new THREE.Mesh(new THREE.TubeGeometry(spoutCurve,40,0.92,16,false),M.chrome);
@@ -327,7 +330,7 @@ var aerRing=new THREE.Mesh(new THREE.CylinderGeometry(1.0,0.85,0.55,20),M.chrome
 aerRing.position.set(0,15.2,7.6); tap.add(aerRing);
 
 // the one control - a round knob on top of the tap head
-var knob=new THREE.Group(); knob.position.set(0,18.7,0); tap.add(knob);
+var knob=new THREE.Group(); knob.position.set(0,20.0,0); tap.add(knob);
 var collar=new THREE.Mesh(new THREE.CylinderGeometry(1.95,2.1,0.55,32),M.chrome);
 collar.position.y=0.27; knob.add(collar);
 var dome=new THREE.Mesh(new THREE.SphereGeometry(1.9,32,18,0,Math.PI*2,0,Math.PI/2),M.chrome);
@@ -350,53 +353,55 @@ hit.position.y=1.0; knob.add(hit);
 var housings=[flange,shank,head,headCap,spoutTube,aerRing,collar,dome,marker,kstem];
 for(var hr=0;hr<10;hr++) housings.push(knob.children[4+hr]);      // ribs ghost too
 
-/* ---------------- internal mechanism (ghost view): two valves in series ---------------- */
+/* -------- internal mechanism (ghost view): ONE head cartridge -------- */
 var mech=new THREE.Group(); tap.add(mech);
 
-// water path up the column
-var waterway=new THREE.Mesh(new THREE.CylinderGeometry(0.42,0.42,13.5,14),M.water);
-waterway.position.set(0,7.9,0); mech.add(waterway);
+// water path: PLAIN column - just a tube, nothing inside it
+var waterway=new THREE.Mesh(new THREE.CylinderGeometry(0.8,0.8,13.2,14),M.water);
+waterway.position.set(0,7.6,0); mech.add(waterway);              // 1.0 .. 14.2 - plain pipe
 
-// VALVE 1 - flow limiter (your turn). Sets how much may pass, never opens on its own.
+// VALVE 1 - flow limiter in the head base (your turn)
 var limSeat=new THREE.Mesh(new THREE.TorusGeometry(0.95,0.11,10,26),M.brass);
-limSeat.rotation.x=Math.PI/2; limSeat.position.set(0,3.0,0); mech.add(limSeat);
-var limiter=new THREE.Group(); limiter.position.set(0,3.9,0); mech.add(limiter);
+limSeat.rotation.x=Math.PI/2; limSeat.position.set(0,14.9,0); mech.add(limSeat);
+var limiter=new THREE.Group(); limiter.position.set(0,15.5,0); mech.add(limiter);
 var limCone=new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.6,1.5,16),M.gear);
 limiter.add(limCone);
 var limSlot=new THREE.Mesh(new THREE.BoxGeometry(1.0,0.12,0.2),M.gear);
 limSlot.position.y=0.7; limiter.add(limSlot);
+var driveShaft=new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.3,4.4,10),M.steel);
+driveShaft.position.set(0,17.9,0); mech.add(driveShaft);         // cone up through the poppet into the knob
 
-// VALVE 2 - poppet + closing spring (press / pull). The real open/close.
+// VALVE 2 - poppet + closing spring (press / pull)
 var seat=new THREE.Mesh(new THREE.TorusGeometry(0.98,0.12,10,26),M.brass);
-seat.rotation.x=Math.PI/2; seat.position.set(0,7.5,0); mech.add(seat);
-var poppet=new THREE.Group(); poppet.position.set(0,8.2,0); mech.add(poppet);
-var stem=new THREE.Mesh(new THREE.CylinderGeometry(0.18,0.18,2.2,10),M.steel);
-stem.position.y=1.0; poppet.add(stem);
-var collar2=new THREE.Mesh(new THREE.CylinderGeometry(0.42,0.42,0.18,12),M.steel);
-collar2.position.y=1.35; poppet.add(collar2);
+seat.rotation.x=Math.PI/2; seat.position.set(0,16.35,0); mech.add(seat);
+var poppet=new THREE.Group(); poppet.position.set(0,16.6,0); mech.add(poppet);
+var stem=new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,1.9,12),M.steel);
+stem.position.y=1.2; poppet.add(stem);
+var collar2=new THREE.Mesh(new THREE.CylinderGeometry(0.62,0.62,0.18,12),M.steel);
+collar2.position.y=1.28; poppet.add(collar2);
 var disc=new THREE.Mesh(new THREE.CylinderGeometry(1.02,1.02,0.26,20),M.steel);
-disc.position.y=-0.35; poppet.add(disc);
+disc.position.y=0; poppet.add(disc);
 var sprPts=[];
 for(var s=0;s<=4.6*2*Math.PI;s+=0.2){
-  sprPts.push(new THREE.Vector3(0.5*Math.cos(s),9.4-(s/(4.6*2*Math.PI))*1.8,0));
+  sprPts.push(new THREE.Vector3(0.62*Math.cos(s),18.75-(s/(4.6*2*Math.PI))*1.55,0));
 }
 var closeSpring=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(sprPts),200,0.06,6,false),M.steel);
 mech.add(closeSpring);
 
 // short dashpot - bleeds a press rinse shut in ~8 s
-var dashBody=new THREE.Mesh(new THREE.CylinderGeometry(0.66,0.66,1.5,20),M.glassy);
-dashBody.position.set(0,12.0,0); mech.add(dashBody);
+var dashBody=new THREE.Mesh(new THREE.CylinderGeometry(0.66,0.66,2.0,20),M.glassy);
+dashBody.position.set(-1.5,18.0,0); mech.add(dashBody);
 var dashPlunger=new THREE.Mesh(new THREE.CylinderGeometry(0.54,0.54,0.5,20),M.gold);
-dashPlunger.position.set(0,11.4,0); mech.add(dashPlunger);
+dashPlunger.position.set(-1.5,17.5,0); mech.add(dashPlunger);
 
 // long dashpot - bleeds a 3-minute wash shut at zero
-var washBody=new THREE.Mesh(new THREE.CylinderGeometry(0.6,0.6,2.2,20),M.glassy);
-washBody.position.set(0,15.4,0); mech.add(washBody);
-var washPlunger=new THREE.Mesh(new THREE.CylinderGeometry(0.48,0.48,0.5,20),M.gold2);
-washPlunger.position.set(0,14.6,0); mech.add(washPlunger);
+var washBody=new THREE.Mesh(new THREE.CylinderGeometry(0.72,0.72,3.2,20),M.glassy);
+washBody.position.set(1.5,16.7,0); mech.add(washBody);
+var washPlunger=new THREE.Mesh(new THREE.CylinderGeometry(0.6,0.6,0.5,20),M.gold2);
+washPlunger.position.set(1.5,15.8,0); mech.add(washPlunger);
 
 // latch - holds the pull-wash open
-var latch=new THREE.Group(); latch.position.set(-1.05,9.6,0); mech.add(latch);
+var latch=new THREE.Group(); latch.position.set(-0.9,17.88,0); mech.add(latch);
 var lArm=new THREE.Mesh(new THREE.BoxGeometry(1.7,0.14,0.3),M.red); lArm.position.x=0.7; latch.add(lArm);
 var lHook=new THREE.Mesh(new THREE.BoxGeometry(0.28,0.4,0.3),M.red); lHook.position.set(1.5,-0.2,0); latch.add(lHook);
 var lTail=new THREE.Mesh(new THREE.BoxGeometry(0.26,0.6,0.28),M.red); lTail.position.set(-0.15,0.35,0); latch.add(lTail);
@@ -404,7 +409,7 @@ var lTail=new THREE.Mesh(new THREE.BoxGeometry(0.26,0.6,0.28),M.red); lTail.posi
 // pulsing "use me" ring around the knob
 var pulseRing=new THREE.Mesh(new THREE.TorusGeometry(2.5,0.08,10,48),
   new THREE.MeshBasicMaterial({color:0x4db8ff,transparent:true,opacity:0.8}));
-pulseRing.rotation.x=Math.PI/2; pulseRing.position.set(0,18.75,0); tap.add(pulseRing);
+pulseRing.rotation.x=Math.PI/2; pulseRing.position.set(0,20.15,0); tap.add(pulseRing);
 
 /* ---------------- water stream ---------------- */
 var streamGrp=new THREE.Group(); scene.add(streamGrp);
@@ -665,14 +670,15 @@ function animate(now){
   var rotT=S.frac*1.5*Math.PI*2;
   S.knobRot+=(rotT-S.knobRot)*Math.min(1,12*dt);
 
-  knob.position.y=18.7+0.9*S.pulled-0.5*S.pressed;
+  knob.position.y=20.0+0.9*S.pulled-0.5*S.pressed;
   knob.rotation.y=S.knobRot;
   limiter.rotation.y=S.knobRot*1.2;
-  poppet.position.y=8.2+S.valveOpen*0.55;
-  closeSpring.scale.y=1-0.25*S.valveOpen;
-  dashPlunger.position.y=11.4+S.valveOpen*0.7;
+  driveShaft.rotation.y=S.knobRot;
+  poppet.position.y=16.6+S.valveOpen*0.55;
+  closeSpring.scale.y=1-0.2*S.valveOpen;
+  dashPlunger.position.y=17.5+S.valveOpen*0.7;
   var wFrac=(S.mode==='wash')?S.remaining/S.totalWash:0;
-  washPlunger.position.y=14.6+S.pulled*1.4-(S.pulled?wFrac*1.7:0);
+  washPlunger.position.y=15.8+S.pulled*1.2-(S.pulled?wFrac*1.6:0);
   latch.rotation.z+=(((S.mode==='wash')?0:0.55)-latch.rotation.z)*Math.min(1,16*dt);
 
   // water stream
@@ -703,7 +709,7 @@ function animate(now){
     tip.style.display=show?'block':'none';
     if(show){
       tap.updateWorldMatrix(true,false);
-      tipV.set(0,22.2,0); tap.localToWorld(tipV); tipV.project(camera);
+      tipV.set(0,23.7,0); tap.localToWorld(tipV); tipV.project(camera);
       tip.style.left=((tipV.x*0.5+0.5)*window.innerWidth)+'px';
       tip.style.top=((-tipV.y*0.5+0.5)*window.innerHeight)+'px';
     }
