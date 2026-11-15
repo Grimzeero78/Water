@@ -7,7 +7,7 @@
 - **Pull** the knob up — a 3-minute wash that bleeds itself shut at zero.
 - **Turn fully back to zero** — the tap is *locked*: even pressing gives nothing.
 
-Two valves sit **in series** inside the tap head: your turn only sets a limit, a spring poppet decides if any water passes, and two oil dashpots (the same idea as a door closer) time the auto-close. No battery, no electronics, no dial, no clockwork — and **no combination of knob positions can leave the water running**.
+Two valves sit **in series** inside the tap **body** (the knob is only the handle): your turn only sets a limit, a spring poppet decides if any water passes, and two oil dashpots (the same idea as a door closer) time the auto-close. No battery, no electronics, no dial, no clockwork — and **no combination of knob positions can leave the water running**.
 
 ![TapTamer, washing at a 7.6 L/min limit](screenshot.png)
 
@@ -54,10 +54,13 @@ running for an hour wastes about **480 L**.
 
 ## Fitting on your tap
 
-Installs like any normal pillar tap: PTFE tape on the 1/2" tail thread, drop it
-through the basin or sink hole, tighten the back-nut, and connect the flexible
-supply hose. The whole mechanism lives inside the tap body — nothing to wire,
-nothing to charge, nothing sticking on the pipe.
+TapTamer is a **complete replacement tap**, not a bolt-on. That is deliberate: all
+the working parts live inside the body (down the column, in the water path), so
+fitting it is simply **swapping the old tap for this one** — turn off the supply,
+undo the old tap's back-nut and lift it out, then PTFE tape on the 1/2" tail,
+drop TapTamer through the same basin hole, tighten the back-nut, connect the same
+flexible supply hose. Nothing sticks onto a pipe, nothing wires in, nothing to
+charge.
 
 ## License
 

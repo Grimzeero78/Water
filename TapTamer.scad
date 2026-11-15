@@ -17,6 +17,7 @@ mode        = "assembled";   // assembled | exploded | printbed
 // tap fitting (basin / sink mounting, like any pillar tap)
 tail_thread = "G1/2";        // 1/2" BSP tail through the basin hole
 tail_d      = 20;            // turned down from stock or brass insert
+tail_len    = 45;            // reaches through basin hole + back-nut
 backnut_d   = 30;
 
 // body column
@@ -61,9 +62,10 @@ orifice_long  = 1.1;
 $fn = 72;
 
 /* ---------- MODULES ---------- */
-module wet_body() {                     // 1 - hollow column + head + spout
+module wet_body() {                     // 1 - tail + hollow column + head + spout
   difference() {
     union() {
+      translate([0,0,-tail_len]) tail_boss();                        // G1/2 tail
       cylinder(d = flange_d, h = flange_t);                          // base flange
       translate([0,0,flange_t])
         cylinder(d1 = shank_d0, d2 = shank_d1, h = shank_len);       // column
@@ -74,9 +76,16 @@ module wet_body() {                     // 1 - hollow column + head + spout
       translate([0,0,0]) spout_shell();                              // gooseneck
     }
     translate([0,0,flange_t]) cylinder(d = bore_d, h = shank_len+head_len);
-    translate([0,0,-1])      cylinder(d = 22, h = flange_t+2);       // inlet
+    translate([0,0,-tail_len-1]) cylinder(d = 13, h = tail_len+flange_t+2);  // inlet waterway
+    translate([0,0,-tail_len])   cylinder(d = tail_d-1, h = 16);     // epoxy bed for brass G1/2 insert
     spout_channel();
   }
+}
+
+module tail_boss() {                    // the swap-in tail: through the basin hole,
+  cylinder(d = tail_d+6, h = tail_len); // brass G1/2 insert epoxied in (or sealed
+  translate([0,0,tail_len-2])           // printed boss), back-nut clamps from below
+    cylinder(d = tail_d+6, h = 2);      // like any pillar tap
 }
 
 module spout_shell() {
@@ -186,8 +195,9 @@ else if(mode=="exploded") exploded();
 else printbed();
 
 /* ---------- PRINT NOTES ----------
- 1  wet_body        PETG, 0.2 mm layers, 4 walls, supports for the spout arc,
-                    drill/tap the tail or glue in a brass G1/2 insert.
+ 1  wet_body        PETG, 0.2 mm layers, 4 walls, supports for the spout arc
+                    and the tail; epoxy a brass G1/2 tail insert into the
+                    tail boss (epoxy bed is printed for it).
  2  top_knob        PLA or PETG, no supports; socket reams to a crisp square.
  3  flow_limiter    PETG; the cone seals on its seat with a light lapping of
                     silicone grease. Square drive fits the knob socket.
@@ -198,5 +208,7 @@ else printbed();
  6  long dashpot    same, orifice ~1.1 mm gives ~3 min; adjust in testing.
                     The latch lever prints in the same file, on the same bed.
  Bought, not printed: closing spring 12x1.2x25 (~30 N), silicone oil 350 cSt,
- M22/M24 brass adapter if adapting an existing tap body, PTFE tape, O-rings.
+ brass G1/2 tail insert + back-nut + flexible hose (any plumbing shop, the
+ "tap fitting kit"), PTFE tape, O-rings. Fitting = swap the old tap for this
+ one: same basin hole, same 1/2" tail, same supply hose.
  -------------------------------- */
