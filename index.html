@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TapTamer - Clockwork Tap Timer</title>
+<meta name="description" content="TapTamer: a pure-mechanical tap timer that screws onto any kitchen or bathroom tap. Twist to 3 or 7 minutes - it shuts itself off. No battery, no electronics.">
+<meta name="theme-color" content="#0d1117">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20512%20512%22%3E%20%3Cdefs%3E%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%20%3Cstop%20offset%3D%220%22%20stop-color%3D%22%232bb1e6%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%2314508f%22%2F%3E%20%3C%2FlinearGradient%3E%20%3C%2Fdefs%3E%20%3Crect%20width%3D%22512%22%20height%3D%22512%22%20rx%3D%22100%22%20fill%3D%22url%28%23g%29%22%2F%3E%20%3Cline%20x1%3D%22358.0%22%20y1%3D%2279.3%22%20x2%3D%22340.0%22%20y2%3D%22110.5%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%2211%22%20stroke-linecap%3D%22round%22%20opacity%3D%220.45%22%2F%3E%20%3Cline%20x1%3D%22432.7%22%20y1%3D%22154.0%22%20x2%3D%22401.5%22%20y2%3D%22172.0%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%2211%22%20stroke-linecap%3D%22round%22%20opacity%3D%220.45%22%2F%3E%20%3Cline%20x1%3D%22460.0%22%20y1%3D%22256.0%22%20x2%3D%22424.0%22%20y2%3D%22256.0%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%2211%22%20stroke-linecap%3D%22round%22%20opacity%3D%220.45%22%2F%3E%20%3Cline%20x1%3D%22432.7%22%20y1%3D%22358.0%22%20x2%3D%22401.5%22%20y2%3D%22340.0%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%2211%22%20stroke-linecap%3D%22round%22%20opacity%3D%220.45%22%2F%3E%20%3Cline%20x1%3D%22358.0%22%20y1%3D%22432.7%22%20x2%3D%22340.0%22%20y2%3D%22401.5%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%2211%22%20stroke-linecap%3D%22round%22%20opacity%3D%220.45%22%2F%3E%20%3Cline%20x1%3D%22256.0%22%20y1%3D%22460.0%22%20x2%3D%22256.0%22%20y2%3D%22424.0%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%2211%22%20stroke-linecap%3D%22round%22%20opacity%3D%220.45%22%2F%3E%20%3Cline%20x1%3D%22154.0%22%20y1%3D%22432.7%22%20x2%3D%22172.0%22%20y2%3D%22401.5%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%2211%22%20stroke-linecap%3D%22round%22%20opacity%3D%220.45%22%2F%3E%20%3Cline%20x1%3D%2279.3%22%20y1%3D%22358.0%22%20x2%3D%22110.5%22%20y2%3D%22340.0%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%2211%22%20stroke-linecap%3D%22round%22%20opacity%3D%220.45%22%2F%3E%20%3Cline%20x1%3D%2252.0%22%20y1%3D%22256.0%22%20x2%3D%2288.0%22%20y2%3D%22256.0%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%2211%22%20stroke-linecap%3D%22round%22%20opacity%3D%220.45%22%2F%3E%20%3Cline%20x1%3D%2279.3%22%20y1%3D%22154.0%22%20x2%3D%22110.5%22%20y2%3D%22172.0%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%2211%22%20stroke-linecap%3D%22round%22%20opacity%3D%220.45%22%2F%3E%20%3Cline%20x1%3D%22154.0%22%20y1%3D%2279.3%22%20x2%3D%22172.0%22%20y2%3D%22110.5%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%2211%22%20stroke-linecap%3D%22round%22%20opacity%3D%220.45%22%2F%3E%20%3Cline%20x1%3D%22256.0%22%20y1%3D%2252.0%22%20x2%3D%22256.0%22%20y2%3D%2296.0%22%20stroke%3D%22%23ffd15c%22%20stroke-width%3D%2216%22%20stroke-linecap%3D%22round%22%20opacity%3D%221.0%22%2F%3E%20%3Cpath%20d%3D%22M256%20130%20C%20238%20172%2C%20158%20250%2C%20158%20324%20a98%2098%200%200%200%20196%200%20C%20354%20250%2C%20274%20172%2C%20256%20130%20Z%22%20fill%3D%22%23ffffff%22%2F%3E%20%3Ccircle%20cx%3D%22256%22%20cy%3D%22324%22%20r%3D%2258%22%20fill%3D%22%231e88cf%22%2F%3E%20%3Cg%20stroke%3D%22%23ffffff%22%20stroke-width%3D%2211%22%20stroke-linecap%3D%22round%22%3E%20%3Cline%20x1%3D%22256%22%20y1%3D%22324%22%20x2%3D%22256%22%20y2%3D%22286%22%2F%3E%20%3Cline%20x1%3D%22256%22%20y1%3D%22324%22%20x2%3D%22290%22%20y2%3D%22324%22%2F%3E%20%3C%2Fg%3E%20%3Ccircle%20cx%3D%22256%22%20cy%3D%22324%22%20r%3D%229%22%20fill%3D%22%23ffffff%22%2F%3E%20%3C%2Fsvg%3E">
+<link rel="icon" type="image/png" sizes="512x512" href="favicon-512.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --line:#2b3440; --text:#e6edf3; --dim:#93a1af;
+    --accent:#4db8ff; --green:#3fb950; --red:#f85149;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);
+    font-family:'Segoe UI',system-ui,Arial,sans-serif;color:var(--text)}
+  #stage{position:fixed;inset:0}
+  #stage canvas{display:block}
+
+  .topbar{position:fixed;top:0;left:0;right:0;height:52px;display:flex;align-items:center;
+    gap:12px;padding:0 16px;background:rgba(13,17,23,.88);border-bottom:1px solid var(--line);z-index:10}
+  .logo{font-weight:700;letter-spacing:.5px;font-size:17px;white-space:nowrap}
+  .logo b{color:var(--accent)}
+  .tag{font-size:11.5px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .spacer{flex:1}
+  .btn{background:#1c2430;border:1px solid var(--line);color:var(--text);font-size:12px;
+    padding:7px 11px;border-radius:6px;cursor:pointer;white-space:nowrap}
+  .btn:hover{border-color:var(--accent)}
+  .btn.on{background:#123a5c;border-color:var(--accent);color:#cfe9ff}
+
+  .panel{position:fixed;top:64px;right:12px;width:290px;background:rgba(22,27,34,.93);
+    border:1px solid var(--line);border-radius:10px;padding:14px;z-index:10}
+  .status{text-align:center;padding:9px 8px;border:1px solid var(--line);border-radius:8px;margin-bottom:10px}
+  .status .mode{font-size:10.5px;letter-spacing:2px;color:var(--dim)}
+  .status .big{font-size:25px;font-weight:700;margin-top:2px;font-variant-numeric:tabular-nums}
+  .status.closed .big{color:var(--dim)}
+  .status.running .big{color:var(--accent)}
+  .status .sub{font-size:11px;color:var(--dim);margin-top:2px}
+  .rowbtns{display:flex;gap:8px;margin-bottom:8px}
+  .bigbtn{flex:1;padding:9px 6px;border-radius:8px;border:1px solid var(--line);
+    background:#1c2430;color:var(--text);font-size:12px;font-weight:600;cursor:pointer;line-height:1.3}
+  .bigbtn b{display:block;font-size:17px;color:var(--accent)}
+  .bigbtn:hover{border-color:var(--accent)}
+  .bigbtn.stop{background:#3a1416;border-color:#7a2b2e;color:#ffb3b6;width:100%;padding:8px}
+  .kv{display:flex;justify-content:space-between;font-size:12.5px;padding:5px 2px;
+    border-bottom:1px dashed #232b36}
+  .kv:last-of-type{border-bottom:none}
+  .kv .v{font-weight:600;font-variant-numeric:tabular-nums}
+  .lbl{font-size:10.5px;letter-spacing:1.5px;color:var(--dim);margin:10px 0 2px}
+  input[type=range]{width:100%;accent-color:#4db8ff}
+  .note{font-size:11px;color:var(--dim);margin-top:10px;line-height:1.5}
+  .note em{color:#cfe9ff;font-style:normal}
+
+  .legend{position:fixed;left:12px;bottom:52px;background:rgba(22,27,34,.93);
+    border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-size:11.5px;z-index:10}
+  .legend h4{font-size:10.5px;letter-spacing:1.5px;color:var(--dim);margin-bottom:6px}
+  .lg{display:flex;align-items:center;gap:8px;padding:2.5px 0}
+  .dot{width:10px;height:10px;border-radius:3px;display:inline-block;flex:none}
+
+  .hint{position:fixed;left:0;right:0;bottom:0;height:38px;display:flex;align-items:center;
+    justify-content:center;font-size:12px;color:var(--dim);background:rgba(13,17,23,.88);
+    border-top:1px solid var(--line);z-index:10;text-align:center;padding:0 10px}
+  .draglabel{position:fixed;top:64px;left:12px;background:rgba(22,27,34,.96);
+    border:1px solid var(--accent);color:#cfe9ff;border-radius:8px;padding:8px 14px;
+    font-size:14px;font-weight:600;display:none;z-index:11}
+
+  .deck{position:fixed;left:50%;transform:translateX(-50%);bottom:54px;display:flex;gap:10px;z-index:12}
+  .deckbtn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+    min-width:122px;padding:12px 18px;border-radius:14px;border:2px solid rgba(255,255,255,.18);
+    color:#fff;cursor:pointer;box-shadow:0 6px 22px rgba(0,0,0,.5);line-height:1.25;font-family:inherit}
+  .deckbtn b{font-size:19px;letter-spacing:.5px}
+  .deckbtn small{font-size:10.5px;opacity:.9}
+  .deckbtn .ic{font-size:12px;opacity:.9}
+  .deckbtn.go{background:linear-gradient(180deg,#2fd05e,#1f8f3d)}
+  .deckbtn.go.alt{background:linear-gradient(180deg,#3d9bf5,#1565b8)}
+  .deckbtn.stop2{background:linear-gradient(180deg,#f46962,#b3231f)}
+  .deckbtn.stop2:disabled{background:#39424e;border-color:#4a5462;color:#94a0ac;cursor:not-allowed;
+    box-shadow:none;opacity:.8}
+  .deckbtn:not(:disabled):hover{filter:brightness(1.13)}
+  .dialtip{position:fixed;left:0;top:0;display:none;pointer-events:none;z-index:12;transform:translate(-50%,-115%);
+    background:#f0b429;color:#181818;font-weight:700;font-size:13px;padding:7px 14px;border-radius:20px;
+    box-shadow:0 4px 14px rgba(0,0,0,.55);white-space:nowrap}
+  .dialtip:after{content:'';position:absolute;left:50%;top:99%;transform:translateX(-50%);
+    border:7px solid transparent;border-top-color:#f0b429}
+  .coach{position:fixed;inset:0;background:rgba(5,10,16,.7);z-index:20;display:flex;
+    align-items:center;justify-content:center}
+  .coach .card{width:min(460px,92vw);background:#161b22;border:1px solid #3a4655;border-radius:14px;
+    padding:24px 26px;box-shadow:0 12px 44px rgba(0,0,0,.65)}
+  .coach h3{font-size:15px;letter-spacing:1.5px;margin-bottom:12px;color:#e6edf3}
+  .coach h3 span{color:#4db8ff}
+  .coach ol{margin:0 0 18px 20px;padding:0;font-size:13.5px;line-height:1.8;color:#c9d4df}
+  .coach b{color:#e6edf3}
+  .coach em{color:#4db8ff;font-style:normal;font-weight:600}
+  .coach button{width:100%;padding:13px;border-radius:10px;border:none;cursor:pointer;
+    background:linear-gradient(180deg,#2fd05e,#1f8f3d);color:#fff;font-size:15px;font-weight:700;
+    letter-spacing:.6px;font-family:inherit}
+  .coach button:hover{filter:brightness(1.1)}
+</style>
+</head>
+<body>
+<div id="stage"></div>
+
+<div class="coach" id="coach">
+  <div class="card">
+    <h3>HOW TO USE <span>TAPTAMER</span></h3>
+    <ol>
+      <li><b>Pick a time</b> - press <em>3 MIN</em> or <em>7 MIN</em> at the bottom,
+        or <em>drag the brass dial</em> (quick-click the dial for a 3-min run).</li>
+      <li><b>Water flows</b> while the clockwork counts down and the dial unwinds to zero.</li>
+      <li><b>It shuts itself off</b> at zero - or twist back to zero / press <em>STOP</em> to close early.</li>
+    </ol>
+    <button id="coachOk">GOT IT - LET ME TRY</button>
+  </div>
+</div>
+
+<div class="topbar">
+  <div class="logo">TAP<b>TAMER</b></div>
+  <div class="tag">screws onto kitchen / bathroom tap &middot; clockwork auto-off &middot; no battery &middot; no electronics &middot; never stays on</div>
+  <div class="spacer"></div>
+  <button class="btn on" id="bXray">SHELL: GHOST</button>
+  <button class="btn on" id="bSound">SOUND: ON</button>
+  <button class="btn spd on" data-s="1">1&times;</button>
+  <button class="btn spd" data-s="10">10&times;</button>
+  <button class="btn spd" data-s="60">60&times;</button>
+</div>
+
+<div class="panel">
+  <div class="status closed" id="statusBox">
+    <div class="mode">VALVE</div>
+    <div class="big" id="bigState">CLOSED</div>
+    <div class="sub" id="subState">pick 3 or 7 min below - or drag the dial</div>
+  </div>
+  <div class="rowbtns">
+    <button class="bigbtn" id="b3"><b>3 MIN</b>twist to 3<br>hands / rinse</button>
+    <button class="bigbtn" id="b7"><b>7 MIN</b>twist to 7<br>pots / shower</button>
+  </div>
+  <button class="bigbtn stop" id="bStop" style="display:none">TWIST BACK TO ZERO - STOP NOW</button>
+
+  <div class="lbl">SUPPLY PRESSURE</div>
+  <input type="range" id="pSlider" min="0.2" max="4" step="0.1" value="2.5">
+  <div class="kv"><span>Mains pressure</span><span class="v" id="pVal">2.5 bar</span></div>
+  <div class="kv"><span>Flow at tap</span><span class="v" id="fVal">8.0 L/min</span></div>
+
+  <div class="lbl">WATER USED</div>
+  <div class="kv"><span>This run</span><span class="v" id="uRun">0.0 L</span></div>
+  <div class="kv"><span>Session total</span><span class="v" id="uTot">0.0 L</span></div>
+
+  <div class="note">
+    Every opening is a timed countdown - <em>max 10 minutes, then it shuts itself off</em>.
+    There is no stay-on position. A tap left running for an hour wastes about 480 L;
+    TapTamer caps every use at the time you twist.
+  </div>
+</div>
+
+<div class="legend" id="legend">
+  <h4>INSIDE THE HEAD (GHOST VIEW)</h4>
+  <div class="lg"><span class="dot" style="background:#d4a017"></span>Mainspring - wound by your twist</div>
+  <div class="lg"><span class="dot" style="background:#2f8f83"></span>Gear train - slows the release</div>
+  <div class="lg"><span class="dot" style="background:#57b86a"></span>Escapement - ticks off the seconds</div>
+  <div class="lg"><span class="dot" style="background:#e8e0cc"></span>Cam drum + push-rod - rides down as it unwinds</div>
+  <div class="lg"><span class="dot" style="background:#cc4444"></span>Latch - holds the valve open, trips at zero</div>
+  <div class="lg"><span class="dot" style="background:#aab3bd"></span>Poppet valve + closing spring</div>
+  <div class="lg"><span class="dot" style="background:#4db8ff"></span>Water path - tap to outlet</div>
+</div>
+
+<div class="deck">
+  <button class="deckbtn go" id="deck3"><span class="ic">&#9654;</span><b>3 MIN</b><small>hands &middot; rinse</small></button>
+  <button class="deckbtn go alt" id="deck7"><span class="ic">&#9654;</span><b>7 MIN</b><small>pots &middot; shower</small></button>
+  <button class="deckbtn stop2" id="deckStop" disabled><span class="ic">&#9632;</span><b>STOP</b><small>close now</small></button>
+</div>
+<div class="dialtip" id="dialTip">DRAG TO TWIST &mdash; or click for a quick 3-min run</div>
+<div class="hint">Click <b>3 MIN</b> or <b>7 MIN</b> below, or drag the brass dial - water flows while the clockwork unwinds, and it dings shut at zero.</div>
+<div class="draglabel" id="dragLabel">TWISTED TO: 4.0 MIN</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+'use strict';
+
+/* ---------------- constants & state ---------------- */
+var MAX_MIN = 10, DEG_PER_MIN = Math.PI/30;   // full scale 10 min = 60 degrees
+var FLOW_REF = 8.0, P_REF = 2.5;              // L/min at reference pressure (bar)
+var S = {
+  running:false, remaining:0, total:0, startAngle:0,
+  usedRun:0, usedTot:0, pressure:2.5, speed:1,
+  xray:true, sound:true,
+  valveOpen:0, latchLift:0, dialAngle:0, springWind:0,
+  flow:0, everStarted:false
+};
+var coachOpen=true, moved=false, tipV=new THREE.Vector3();
+
+function flowAt(p){ return FLOW_REF * Math.sqrt(p / P_REF); }
+
+/* ---------------- audio ---------------- */
+var AC=null;
+function ac(){ if(!AC){ try{ AC=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } return AC; }
+function beep(freq,dur,gain,type,when){
+  var c=ac(); if(!c||!S.sound) return;
+  var t=c.currentTime+(when||0);
+  var o=c.createOscillator(), g=c.createGain();
+  o.type=type||'sine'; o.frequency.value=freq;
+  g.gain.setValueAtTime(gain,t); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  o.connect(g); g.connect(c.destination); o.start(t); o.stop(t+dur+0.02);
+}
+function sTick(){ beep(2100,0.02,0.05,'square'); }
+function sClick(){ beep(900,0.03,0.09,'square'); beep(1400,0.02,0.05,'square',0.02); }
+function sRatchet(){ for(var i=0;i<4;i++) beep(1250,0.018,0.05,'square',i*0.055); }
+function sDing(){ for(var i=0;i<3;i++){ beep(1568,0.9,0.16,'sine',i*0.28); beep(2093,0.7,0.09,'sine',i*0.28+0.01);} }
+
+/* ---------------- renderer / scene ---------------- */
+var stage=document.getElementById('stage');
+var renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+renderer.setSize(window.innerWidth,window.innerHeight);
+renderer.outputEncoding=THREE.sRGBEncoding;
+stage.appendChild(renderer.domElement);
+
+var scene=new THREE.Scene();
+scene.background=new THREE.Color(0x11161d);
+scene.fog=new THREE.Fog(0x11161d,70,160);
+
+var camera=new THREE.PerspectiveCamera(45,window.innerWidth/window.innerHeight,0.1,400);
+var camT={r:30,theta:0.3,phi:1.25,target:new THREE.Vector3(0,11,0)};
+function placeCam(){
+  var sp=Math.sin(camT.phi),x=camT.r*sp*Math.sin(camT.theta),y=camT.r*Math.cos(camT.phi),z=camT.r*sp*Math.cos(camT.theta);
+  camera.position.set(camT.target.x+x,camT.target.y+y,camT.target.z+z);
+  camera.lookAt(camT.target);
+}
+placeCam();
+
+scene.add(new THREE.HemisphereLight(0xdfeaf5,0x2a2620,0.95));
+var sun=new THREE.DirectionalLight(0xfff2df,0.85); sun.position.set(18,34,20); scene.add(sun);
+var fill=new THREE.DirectionalLight(0xbfd8ff,0.28); fill.position.set(-22,14,-14); scene.add(fill);
+
+/* ---------------- environment ---------------- */
+function tileTexture(){
+  var c=document.createElement('canvas'); c.width=c.height=256;
+  var g=c.getContext('2d');
+  g.fillStyle='#dfe5ec'; g.fillRect(0,0,256,256);
+  g.strokeStyle='#c3ccd6'; g.lineWidth=3;
+  for(var i=0;i<=256;i+=64){ g.beginPath();g.moveTo(i,0);g.lineTo(i,256);g.stroke();
+    g.beginPath();g.moveTo(0,i);g.lineTo(256,i);g.stroke(); }
+  var t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.repeat.set(8,8);
+  return t;
+}
+var floor=new THREE.Mesh(new THREE.PlaneGeometry(220,220),
+  new THREE.MeshStandardMaterial({map:tileTexture(),roughness:0.9}));
+floor.rotation.x=-Math.PI/2; floor.position.y=-6; scene.add(floor);
+
+var wall=new THREE.Mesh(new THREE.PlaneGeometry(220,120),
+  new THREE.MeshStandardMaterial({map:tileTexture(),roughness:0.95}));
+wall.position.set(0,54,-34); scene.add(wall);
+
+var M={ // shared materials
+  wood:new THREE.MeshStandardMaterial({color:0xb59a7a,roughness:0.75}),
+  sink:new THREE.MeshStandardMaterial({color:0xe8ebee,roughness:0.35,metalness:0.05}),
+  cavity:new THREE.MeshStandardMaterial({color:0x39424c,roughness:0.6}),
+  chrome:new THREE.MeshStandardMaterial({color:0xd8dde2,roughness:0.22,metalness:0.65}),
+  brass:new THREE.MeshStandardMaterial({color:0xb08d57,roughness:0.35,metalness:0.5}),
+  housing:new THREE.MeshStandardMaterial({color:0x6b7280,roughness:0.5,metalness:0.25}),
+  dark:new THREE.MeshStandardMaterial({color:0x232a33,roughness:0.55}),
+  steel:new THREE.MeshStandardMaterial({color:0xaab3bd,roughness:0.35,metalness:0.55}),
+  gold:new THREE.MeshStandardMaterial({color:0xd4a017,roughness:0.4,metalness:0.45}),
+  gear:new THREE.MeshStandardMaterial({color:0x2f8f83,roughness:0.45,metalness:0.35}),
+  esc:new THREE.MeshStandardMaterial({color:0x57b86a,roughness:0.45,metalness:0.25}),
+  ivory:new THREE.MeshStandardMaterial({color:0xe8e0cc,roughness:0.6}),
+  red:new THREE.MeshStandardMaterial({color:0xcc4444,roughness:0.5}),
+  water:new THREE.MeshStandardMaterial({color:0x2f9be0,transparent:true,opacity:0.72,roughness:0.15}),
+  waterCore:new THREE.MeshStandardMaterial({color:0x9fd9ff,transparent:true,opacity:0.55,roughness:0.1}),
+  ghost:null
+};
+M.ghost=new THREE.MeshStandardMaterial({color:0x8fa0b5,roughness:0.5,metalness:0.3,transparent:true,opacity:0.13,depthWrite:false});
+
+// counter
+var counter=new THREE.Mesh(new THREE.BoxGeometry(46,6,36),M.wood);
+counter.position.set(0,-3,0); scene.add(counter);
+// sink recess + rim
+var cav=new THREE.Mesh(new THREE.BoxGeometry(36,0.4,26),M.cavity);
+cav.position.set(0,-0.12,1); scene.add(cav);
+function rimBox(w,d,x,z){
+  var b=new THREE.Mesh(new THREE.BoxGeometry(w,3,d),M.sink); b.position.set(x,1.2,z); scene.add(b);
+}
+rimBox(40,2,0,-13.2); rimBox(40,2,0,15.2); rimBox(2,30,-19.2,1); rimBox(2,30,19.2,1);
+var waterFloor=new THREE.Mesh(new THREE.PlaneGeometry(35.4,25.4),
+  new THREE.MeshStandardMaterial({color:0x2c5a78,transparent:true,opacity:0.55,roughness:0.1}));
+waterFloor.rotation.x=-Math.PI/2; waterFloor.position.set(0,0.1,1); scene.add(waterFloor);
+
+/* ---------------- tap ---------------- */
+var tap=new THREE.Group();
+var base=new THREE.Mesh(new THREE.CylinderGeometry(2.6,3,1.6,32),M.chrome); base.position.y=0.8; tap.add(base);
+var pipe=new THREE.Mesh(new THREE.CylinderGeometry(1.05,1.05,28,24),M.chrome); pipe.position.y=16; tap.add(pipe);
+var curve=new THREE.CatmullRomCurve3([
+  new THREE.Vector3(0,30,0),new THREE.Vector3(0,32.6,1.2),new THREE.Vector3(0,33.4,4.5),
+  new THREE.Vector3(0,32.6,8.5),new THREE.Vector3(0,30,11),new THREE.Vector3(0,26.5,12.2)
+]);
+var gooseneck=new THREE.Mesh(new THREE.TubeGeometry(curve,40,1.05,16,false),M.chrome); tap.add(gooseneck);
+var spout=new THREE.Mesh(new THREE.CylinderGeometry(1.05,1.05,6.5,24),M.chrome); spout.position.set(0,23.2,12.2); tap.add(spout);
+tap.position.set(0,0,-15); scene.add(tap);
+// spout tip world position: (0,20,-2.8) -> device hangs below over the basin center
+var DEVX=0, DEVZ=-2.8;
+
+/* ---------------- device ---------------- */
+var device=new THREE.Group(); device.position.set(DEVX,0,DEVZ); scene.add(device);
+
+// solid housing meshes (ghosted when x-ray)
+var inletN=new THREE.Mesh(new THREE.CylinderGeometry(1.45,1.45,2.4,24),M.brass); inletN.position.set(0,19.6,0); device.add(inletN);
+var headDrum=new THREE.Mesh(new THREE.CylinderGeometry(3.1,3.1,3.8,36),M.housing);
+headDrum.rotation.x=Math.PI/2; headDrum.position.set(0,16,0); device.add(headDrum);
+var body=new THREE.Mesh(new THREE.CylinderGeometry(2.0,2.0,3.4,28),M.brass); body.position.set(0,11.3,0); device.add(body);
+var outletN=new THREE.Mesh(new THREE.CylinderGeometry(1.15,1.15,1.1,20),M.brass); outletN.position.set(0,8.9,0); device.add(outletN);
+var aerRing=new THREE.Mesh(new THREE.CylinderGeometry(1.2,1.05,0.5,20),M.chrome); aerRing.position.set(0,8.2,0); device.add(aerRing);
+var housings=[inletN,headDrum,body,outletN,aerRing];
+
+// dial knob (front face +z)
+function dialFaceTexture(){
+  var c=document.createElement('canvas'); c.width=c.height=256; var g=c.getContext('2d');
+  g.fillStyle='#4a5462'; g.fillRect(0,0,256,256);
+  g.fillStyle='#57616f'; g.beginPath(); g.arc(128,128,124,0,Math.PI*2); g.fill();
+  g.strokeStyle='#9aa6b4'; g.lineWidth=6; g.beginPath(); g.arc(128,128,120,0,Math.PI*2); g.stroke();
+  var cx=128,cy=128,R=108;
+  for(var m=0;m<=10;m++){
+    var a=-m*6*Math.PI/180-Math.PI/2; // 0 min at top, sweeping counter-clockwise as it unwinds
+    var x1=cx+R*Math.cos(a),y1=cy+R*Math.sin(a);
+    var x2=cx+(R-14)*Math.cos(a),y2=cy+(R-14)*Math.sin(a);
+    g.strokeStyle= (m===3)?'#f85149':(m===7)?'#3fb950':'#e6edf3';
+    g.lineWidth=(m%5===0)?6:3;
+    g.beginPath(); g.moveTo(x1,y1); g.lineTo(x2,y2); g.stroke();
+    if(m===0||m===5||m===10||m===3||m===7){
+      g.fillStyle=g.strokeStyle; g.font='bold 34px Arial'; g.textAlign='center'; g.textBaseline='middle';
+      g.fillText(String(m),cx+(R-38)*Math.cos(a),cy+(R-38)*Math.sin(a));
+    }
+  }
+  return new THREE.CanvasTexture(c);
+}
+var dialKnob=new THREE.Group(); dialKnob.position.set(0,16,2.0); device.add(dialKnob);
+var knobBody=new THREE.Mesh(new THREE.CylinderGeometry(2.35,2.5,1.15,36),M.dark);
+knobBody.rotation.x=Math.PI/2; dialKnob.add(knobBody);
+var knobFace=new THREE.Mesh(new THREE.CircleGeometry(2.22,40),
+  new THREE.MeshStandardMaterial({map:dialFaceTexture(),roughness:0.6,transparent:true,opacity:1}));
+knobFace.position.z=0.6; dialKnob.add(knobFace);
+var grip=new THREE.Mesh(new THREE.TorusGeometry(2.42,0.09,10,40),M.brass); dialKnob.add(grip);
+// fixed index pointer (on housing, does not rotate)
+var indexP=new THREE.Mesh(new THREE.ConeGeometry(0.2,0.5,4),
+  new THREE.MeshStandardMaterial({color:0xf85149,roughness:0.4}));
+indexP.position.set(0,18.75,2.75); indexP.rotation.x=Math.PI; device.add(indexP);
+housings.push(knobBody,grip);
+// pulsing "use me" ring around the dial (hidden after the first run)
+var pulseRing=new THREE.Mesh(new THREE.TorusGeometry(3.05,0.07,10,48),
+  new THREE.MeshBasicMaterial({color:0x4db8ff,transparent:true,opacity:0.8}));
+pulseRing.position.set(0,16,2.7); device.add(pulseRing);
+
+/* ---------------- internal mechanism ---------------- */
+var mech=new THREE.Group(); device.add(mech);
+
+// water tube through head (dry outside it)
+var wTube=new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,8.2,14),M.water);
+wTube.position.set(0,15.0,0); mech.add(wTube);
+
+// mainspring - spiral around dial shaft (plane xy, near front)
+var sprPts=[];
+for(var th=0; th<=4.6*2*Math.PI; th+=0.12){
+  var r=0.3+0.40*th/(2*Math.PI);
+  sprPts.push(new THREE.Vector3(r*Math.cos(th),r*Math.sin(th),0));
+}
+var mainspring=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(sprPts),300,0.075,6,false),M.gold);
+var sprGrp=new THREE.Group(); sprGrp.position.set(0,16,0.95); sprGrp.add(mainspring); mech.add(sprGrp);
+var sprShaft=new THREE.Mesh(new THREE.CylinderGeometry(0.22,0.22,3.4,10),M.steel);
+sprShaft.rotation.x=Math.PI/2; sprShaft.position.set(0,16,0); mech.add(sprShaft);
+
+// gear train (stacked along z)
+function makeGear(r,teeth,depth,mat){
+  var g=new THREE.Group();
+  var disc=new THREE.Mesh(new THREE.CylinderGeometry(r*0.94,r*0.94,depth,30),mat);
+  disc.rotation.x=Math.PI/2; g.add(disc);
+  for(var i=0;i<teeth;i++){
+    var a=i/teeth*2*Math.PI;
+    var t=new THREE.Mesh(new THREE.BoxGeometry(r*0.20,0.16,depth*0.7),mat);
+    t.position.set(r*Math.cos(a),r*Math.sin(a),0); t.rotation.z=a; g.add(t);
+  }
+  var hub=new THREE.Mesh(new THREE.CylinderGeometry(r*0.16,r*0.16,depth+0.15,12),M.dark);
+  hub.rotation.x=Math.PI/2; g.add(hub);
+  return g;
+}
+var g1=makeGear(1.5,22,0.32,M.gear); g1.position.set(0,15.7,0.35); mech.add(g1);
+var g2=makeGear(0.9,14,0.32,M.gear); g2.position.set(1.9,16.9,0.35); mech.add(g2);
+var g3=makeGear(1.25,20,0.32,M.gear);  g3.position.set(1.45,16.5,-0.15); mech.add(g3);
+
+// escapement: escape wheel + rocking pallet
+var escWheel=makeGear(1.0,15,0.2,M.esc); escWheel.position.set(0.35,17.75,-0.62); mech.add(escWheel);
+var pallet=new THREE.Group(); pallet.position.set(1.6,18.2,-0.62);
+var armL=new THREE.Mesh(new THREE.BoxGeometry(0.12,1.35,0.16),M.red); armL.position.set(-0.28,-0.62,0); armL.rotation.z=0.42; pallet.add(armL);
+var armR=new THREE.Mesh(new THREE.BoxGeometry(0.12,1.5,0.16),M.red); armR.position.set(0.3,-0.72,0); armR.rotation.z=-0.42; pallet.add(armR);
+var pivotB=new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.1,0.3,8),M.dark); pivotB.rotation.x=Math.PI/2; pallet.add(pivotB);
+mech.add(pallet);
+
+// cam drum (rear) + push-rod
+var cam=new THREE.Group(); cam.position.set(0,16,-1.25); mech.add(cam);
+var camBody=new THREE.Mesh(new THREE.CylinderGeometry(1.25,1.25,0.85,28),M.ivory);
+camBody.rotation.x=Math.PI/2; cam.add(camBody);
+var camLobe=new THREE.Mesh(new THREE.BoxGeometry(0.5,0.55,0.9),M.ivory);
+camLobe.position.set(0,-1.15,0); cam.add(camLobe);
+var pushRod=new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.2,1.5,10),M.ivory);
+pushRod.position.set(0,13.85,0); mech.add(pushRod);
+
+// latch lever (inside body top)
+var latch=new THREE.Group(); latch.position.set(-1.35,12.35,0); mech.add(latch);
+var lArm=new THREE.Mesh(new THREE.BoxGeometry(1.8,0.16,0.35),M.red); lArm.position.set(0.85,0,0); latch.add(lArm);
+var lHook=new THREE.Mesh(new THREE.BoxGeometry(0.3,0.42,0.35),M.red); lHook.position.set(1.62,-0.2,0); latch.add(lHook);
+var lTail=new THREE.Mesh(new THREE.BoxGeometry(0.28,0.7,0.3),M.red); lTail.position.set(0.12,0.42,0); latch.add(lTail);
+
+// poppet valve + closing spring (in body, wet chamber)
+var poppet=new THREE.Group(); poppet.position.set(0.27,11.0,0); mech.add(poppet);
+var stem=new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.3,1.9,10),M.steel); stem.position.y=0.9; poppet.add(stem);
+var flange=new THREE.Mesh(new THREE.CylinderGeometry(0.95,0.95,0.18,18),M.steel); flange.position.y=1.62; poppet.add(flange);
+var disc=new THREE.Mesh(new THREE.CylinderGeometry(1.55,1.55,0.28,24),
+  new THREE.MeshStandardMaterial({color:0xc8ccd4,roughness:0.3,metalness:0.55})); disc.position.y=-0.35; poppet.add(disc);
+var seat=new THREE.Mesh(new THREE.TorusGeometry(1.45,0.14,10,26),M.brass);
+seat.rotation.x=Math.PI/2; seat.position.set(0,10.38,0); mech.add(seat);
+var sprHelixPts=[];
+for(var s=0;s<=5.2*2*Math.PI;s+=0.2){
+  sprHelixPts.push(new THREE.Vector3(0.52*Math.cos(s),1.45 - (s/(5.2*2*Math.PI))*1.35,0));
+}
+var closeSpring=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(sprHelixPts),200,0.07,6,false),M.steel);
+closeSpring.position.set(0.27,11.0,0); mech.add(closeSpring);
+
+// bell striker (back of head)
+var bell=new THREE.Mesh(new THREE.SphereGeometry(0.55,16,10,0,Math.PI*2,0,Math.PI/2),M.brass);
+bell.rotation.x=Math.PI; bell.position.set(0,16,-2.25); mech.add(bell);
+
+/* ---------------- water stream ---------------- */
+var streamGrp=new THREE.Group(); scene.add(streamGrp);
+var stream=new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.62,7.6,16),M.water);
+stream.geometry=new THREE.CylinderGeometry(0.5,0.62,7.6,16,1,true);
+stream.position.set(0,4.55,DEVZ); streamGrp.add(stream);
+var core=new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.4,7.6,12,1,true),M.waterCore);
+core.position.set(0,4.55,DEVZ); streamGrp.add(core);
+var ripples=[];
+for(var ri=0;ri<3;ri++){
+  var ring=new THREE.Mesh(new THREE.TorusGeometry(0.8,0.06,8,30),M.water);
+  ring.rotation.x=Math.PI/2; ring.position.set(0,0.35,DEVZ); ring.userData.ph=ri/3; streamGrp.add(ring); ripples.push(ring);
+}
+streamGrp.visible=false;
+
+/* ---------------- x-ray toggle ---------------- */
+function applyXray(){
+  housings.forEach(function(m){ m.material=S.xray?M.ghost:m.material===M.ghost?M.housing:m.material; });
+  // restore proper materials when solid
+  inletN.material=headDrum.material=(S.xray?M.ghost:M.housing);
+  body.material=outletN.material=(S.xray?M.ghost:M.brass);
+  aerRing.material=(S.xray?M.ghost:M.chrome);
+  knobBody.material=(S.xray?M.ghost:M.dark);
+  grip.material=(S.xray?M.ghost:M.brass);
+  knobFace.material.opacity=S.xray?0.4:1;
+  wTube.visible=S.xray;
+  document.getElementById('legend').style.display=S.xray?'block':'none';
+  document.getElementById('bXray').textContent=S.xray?'SHELL: GHOST':'SHELL: SOLID';
+  document.getElementById('bXray').classList.toggle('on',S.xray);
+}
+applyXray();
+
+/* ---------------- state actions ---------------- */
+function startRun(minutes){
+  minutes=Math.min(MAX_MIN,Math.max(0.3,minutes));
+  S.total=minutes*60; S.remaining=S.total;
+  S.startAngle=minutes*6*DEG_PER_MIN/6; // minutes*6 degrees in rad
+  S.startAngle=minutes*6*Math.PI/180;
+  S.running=true; S.usedRun=0; S.latchLift=0; S.everStarted=true;
+  if(coachOpen){ coachOpen=false; document.getElementById('coach').style.display='none'; }
+  sRatchet();
+  uiStatus();
+}
+function shutOff(auto){
+  S.remaining=0; S.running=false; S.flow=0;
+  if(auto){ sDing(); } else { sClick(); }
+  uiStatus();
+}
+function uiStatus(){
+  var box=document.getElementById('statusBox');
+  var big=document.getElementById('bigState'), sub=document.getElementById('subState');
+  var stop=document.getElementById('bStop');
+  document.getElementById('deckStop').disabled=!S.running;
+  if(S.running){
+    var m=Math.floor(S.remaining/60), s=Math.floor(S.remaining%60);
+    big.textContent=(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+    box.className='status running';
+    sub.textContent='clockwork counting down - valve open';
+    stop.style.display='block';
+  }else{
+    big.textContent='CLOSED';
+    box.className='status closed';
+    sub.textContent='pick 3 or 7 min below - or drag the dial';
+    stop.style.display='none';
+  }
+}
+
+/* ---------------- UI wiring ---------------- */
+function startFromUI(min){ ac(); startRun(min); }
+document.getElementById('b3').onclick=function(){ startFromUI(3); };
+document.getElementById('b7').onclick=function(){ startFromUI(7); };
+document.getElementById('bStop').onclick=function(){ if(S.running) shutOff(false); };
+document.getElementById('deck3').onclick=function(){ startFromUI(3); };
+document.getElementById('deck7').onclick=function(){ startFromUI(7); };
+document.getElementById('deckStop').onclick=function(){ if(S.running) shutOff(false); };
+document.getElementById('coachOk').onclick=function(){
+  coachOpen=false; document.getElementById('coach').style.display='none'; ac();
+};
+window.addEventListener('keydown',function(ev){
+  if(coachOpen && ev.key==='Escape'){ document.getElementById('coachOk').click(); return; }
+  if(ev.key==='3') startFromUI(3);
+  else if(ev.key==='7') startFromUI(7);
+  else if((ev.key==='0'||ev.key==='Escape')&&S.running) shutOff(false);
+});
+document.getElementById('bXray').onclick=function(){ S.xray=!S.xray; applyXray(); };
+document.getElementById('bSound').onclick=function(){
+  S.sound=!S.sound;
+  this.textContent=S.sound?'SOUND: ON':'SOUND: OFF';
+  this.classList.toggle('on',S.sound);
+};
+var spdBtns=document.querySelectorAll('.spd');
+spdBtns.forEach(function(b){
+  b.onclick=function(){
+    spdBtns.forEach(function(x){x.classList.remove('on');});
+    b.classList.add('on'); S.speed=parseFloat(b.getAttribute('data-s'));
+  };
+});
+var pSlider=document.getElementById('pSlider');
+pSlider.oninput=function(){
+  S.pressure=parseFloat(pSlider.value);
+  document.getElementById('pVal').textContent=S.pressure.toFixed(1)+' bar';
+};
+
+/* ---------------- pointer: orbit + dial twist ---------------- */
+var ray=new THREE.Raycaster(), mouse=new THREE.Vector2();
+var drag=null; // {mode:'dial'|'orbit', x,y, startMin}
+var dialDragMin=0;
+function pickDial(ev){
+  var rect=renderer.domElement.getBoundingClientRect();
+  mouse.x=((ev.clientX-rect.left)/rect.width)*2-1;
+  mouse.y=-((ev.clientY-rect.top)/rect.height)*2+1;
+  ray.setFromCamera(mouse,camera);
+  var hits=ray.intersectObjects(dialKnob.children,false);
+  return hits.length>0;
+}
+renderer.domElement.addEventListener('pointerdown',function(ev){
+  ac();
+  moved=false;
+  if(pickDial(ev)){
+    drag={mode:'dial',x:ev.clientX,sx:ev.clientX};
+    dialDragMin=S.running? S.remaining/60 : 0;
+    document.getElementById('dragLabel').style.display='block';
+    renderer.domElement.style.cursor='grabbing';
+  }else{
+    drag={mode:'orbit',x:ev.clientX,y:ev.clientY,sx:ev.clientX};
+  }
+});
+renderer.domElement.addEventListener('pointermove',function(ev){
+  if(drag) return;
+  renderer.domElement.style.cursor=pickDial(ev)?'grab':'default';
+});
+window.addEventListener('pointermove',function(ev){
+  if(!drag) return;
+  if(Math.abs(ev.clientX-drag.sx)>3) moved=true;
+  if(drag.mode==='dial'){
+    var dx=ev.clientX-drag.x;
+    dialDragMin=Math.min(MAX_MIN,Math.max(0,dialDragMin+dx*0.03));
+    drag.x=ev.clientX;
+    document.getElementById('dragLabel').textContent=dialDragMin<0.3?'ZERO - RELEASE TO CLOSE':'TWISTED TO: '+dialDragMin.toFixed(1)+' MIN';
+  }else{
+    camT.theta-=(ev.clientX-drag.x)*0.005;
+    camT.phi=Math.min(1.45,Math.max(0.35,camT.phi-(ev.clientY-drag.y)*0.004));
+    drag.x=ev.clientX; drag.y=ev.clientY; placeCam();
+  }
+});
+window.addEventListener('pointerup',function(){
+  if(drag&&drag.mode==='dial'){
+    document.getElementById('dragLabel').style.display='none';
+    renderer.domElement.style.cursor='grab';
+    if(!moved){ startRun(3); }                              // quick click on the dial = 3-minute run
+    else if(dialDragMin<0.3){ if(S.running) shutOff(false); } // twisted back to zero = close now
+    else startRun(dialDragMin);
+  }
+  drag=null;
+});
+renderer.domElement.addEventListener('wheel',function(ev){
+  camT.r=Math.min(95,Math.max(22,camT.r*(1+ev.deltaY*0.001))); placeCam();
+},{passive:true});
+window.addEventListener('resize',function(){
+  camera.aspect=window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth,window.innerHeight);
+});
+
+/* ---------------- main loop ---------------- */
+var last=performance.now(), uiAcc=0, tickAcc=0, tGlobal=0;
+function animate(now){
+  requestAnimationFrame(animate);
+  var dtRaw=Math.min(2,(now-last)/1000); last=now;
+  var dt=Math.min(0.05,dtRaw); tGlobal+=dt;
+  var simDt=dtRaw*S.speed;   // wall-clock based: countdown stays true even if frames throttle (hidden tab)
+
+  // countdown
+  if(S.running){
+    var step=Math.min(simDt,S.remaining);   // never bill water past zero
+    S.remaining-=simDt;
+    S.flow=flowAt(S.pressure);
+    var liters=S.flow*step/60;
+    S.usedRun+=liters; S.usedTot+=liters;
+    if(S.remaining<=0){ S.remaining=0; shutOff(true); }
+    // escapement tick sound: only at real-time speed
+    tickAcc+=simDt;
+    if(S.speed===1 && tickAcc>=1){ tickAcc=0; sTick(); }
+  }else{ S.flow=0; tickAcc=0.9; }
+
+  // valve + latch animation
+  var vTarget=S.running?1:0;
+  var vRate=S.running?14:22;
+  S.valveOpen+=(vTarget-S.valveOpen)*Math.min(1,vRate*dt);
+  S.latchLift+=((S.running?0:1)-S.latchLift)*Math.min(1,16*dt);
+
+  // dial position: unwinds from startAngle to 0 as remaining goes total->0
+  S.dialAngle=S.running? (S.remaining/S.total)*S.startAngle : 0;
+  if(drag&&drag.mode==='dial'){ S.dialAngle=dialDragMin*6*Math.PI/180; }
+
+  // mechanism animation
+  dialKnob.rotation.z=-S.dialAngle;
+  sprGrp.rotation.z=-S.dialAngle*0.9;
+  S.springWind=S.dialAngle;
+  g1.rotation.z-=simDt*0.55;      // slow barrel gear
+  g2.rotation.z+=simDt*0.55*(1.55/0.95);
+  g3.rotation.z-=simDt*0.55*(1.55/1.5);
+  escWheel.rotation.z-=simDt*1.15;
+  pallet.rotation.z=Math.sin(tGlobal*Math.PI*2*(S.speed===1?1:S.speed*0.02))*0.16*(S.running?1:0);
+  cam.rotation.z=-S.dialAngle;
+  pushRod.position.y=13.9+S.latchLift*0.55;
+  latch.rotation.z=S.latchLift*0.55;
+  poppet.position.y=S.valveOpen*0.85;
+  closeSpring.scale.y=1-0.32*S.valveOpen;
+  bell.position.x=(S.latchLift>0.5&&!S.running)?Math.sin(tGlobal*60)*0.06:0;
+
+  // water stream
+  var showWater=S.valveOpen>0.06&&S.flow>0.05;
+  streamGrp.visible=showWater;
+  if(showWater){
+    stream.scale.y=S.valveOpen; core.scale.y=S.valveOpen;
+    stream.material.opacity=0.55+0.25*S.valveOpen;
+    var fs=(0.72+0.28*Math.min(1,S.flow/8))*(1+0.05*Math.sin(tGlobal*22));
+    stream.scale.x=fs; stream.scale.z=fs; core.scale.x=fs; core.scale.z=fs;
+    ripples.forEach(function(r){
+      var ph=((tGlobal*0.7+r.userData.ph)%1);
+      r.scale.setScalar(0.6+ph*5.5);
+      r.material.opacity=0.5*(1-ph);
+    });
+  }
+
+  // panel readouts (10 Hz)
+  uiAcc+=dt;
+  if(uiAcc>0.1){
+    uiAcc=0;
+    document.getElementById('fVal').textContent=(S.running?flowAt(S.pressure):0).toFixed(1)+' L/min';
+    document.getElementById('uRun').textContent=S.usedRun.toFixed(1)+' L';
+    document.getElementById('uTot').textContent=S.usedTot.toFixed(1)+' L';
+    if(S.running){
+      var m=Math.floor(S.remaining/60),s=Math.floor(S.remaining%60);
+      document.getElementById('bigState').textContent=(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+    }
+  }
+
+  // pulsing ring + floating dial tip
+  pulseRing.visible=!S.running&&!S.everStarted;
+  if(pulseRing.visible){
+    var pk=1+0.07*Math.sin(tGlobal*4.2);
+    pulseRing.scale.set(pk,pk,1);
+    pulseRing.material.opacity=0.45+0.32*(0.5+0.5*Math.sin(tGlobal*4.2));
+  }
+  var tip=document.getElementById('dialTip');
+  if(tip){
+    var show=!S.everStarted&&!S.running;
+    tip.style.display=show?'block':'none';
+    if(show){
+      device.updateWorldMatrix(true,false);
+      tipV.set(0,19.8,2.4); device.localToWorld(tipV); tipV.project(camera);
+      tip.style.left=((tipV.x*0.5+0.5)*window.innerWidth)+'px';
+      tip.style.top=((-tipV.y*0.5+0.5)*window.innerHeight)+'px';
+    }
+  }
+
+  renderer.render(scene,camera);
+}
+requestAnimationFrame(animate);
+uiStatus();
+
+/* test hooks */
+window.APP={S:S,startRun:startRun,shutOff:shutOff,flowAt:flowAt};
+})();
+</script>
+</body>
+</html>
