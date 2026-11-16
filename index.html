@@ -83,6 +83,12 @@
     box-shadow:0 4px 14px rgba(0,0,0,.55);white-space:nowrap}
   .knobtip:after{content:'';position:absolute;left:50%;top:99%;transform:translateX(-50%);
     border:7px solid transparent;border-top-color:#f0b429}
+  #expLabels{position:fixed;inset:0;pointer-events:none;display:none;z-index:9}
+  .explabel{position:absolute;transform:translate(-50%,-100%);background:rgba(10,14,20,.88);
+    border:1px solid #2a3644;border-radius:6px;padding:3px 9px;font-size:10px;font-weight:600;
+    color:#cfe0f0;white-space:nowrap;margin-top:-8px;letter-spacing:.3px}
+  .explabel .ldot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;
+    vertical-align:-1px}
   .coach{position:fixed;inset:0;background:rgba(5,10,16,.7);z-index:20;display:flex;
     align-items:center;justify-content:center}
   .coach .card{width:min(480px,92vw);background:#161b22;border:1px solid #3a4655;border-radius:14px;
@@ -121,7 +127,8 @@
       inside it. TapTamer is a whole replacement tap: fitting is one swap, servicing
       is one lid.
       Keys: <em>1</em> press &middot; <em>2</em> pull &middot;
-      <em>&larr;/&rarr;</em> turn &middot; <em>L</em> lock &middot; <em>0</em> stop</div>
+      <em>&larr;/&rarr;</em> turn &middot; <em>L</em> lock &middot; <em>0</em> stop &middot;
+      <em>E</em> explode the model to see every part</div>
     <button id="coachOk">GOT IT - LET ME TRY</button>
   </div>
 </div>
@@ -131,6 +138,7 @@
   <div class="tag">looks like a normal tap &middot; whole mechanism in one head &middot; turn never opens water &middot; always ends closed</div>
   <div class="spacer"></div>
   <button class="btn on" id="bXray">SHELL: GHOST</button>
+  <button class="btn" id="bExplode">EXPLODE: OFF</button>
   <button class="btn on" id="bSound">SOUND: ON</button>
   <button class="btn spd on" data-s="1">1&times;</button>
   <button class="btn spd" data-s="10">10&times;</button>
@@ -182,7 +190,7 @@
   <button class="deckbtn stop2" id="deckStop" disabled><span class="ic">&#9632;</span><b>STOP</b><small>close now</small></button>
 </div>
 <div class="knobtip" id="knobTip">PRESS &middot; PULL &middot; TURN the top knob</div>
-<div class="hint"><b>TURN</b> sets the limit only - <b>PRESS</b> for a quick rinse - <b>PULL</b> for a 3-min wash - turn back to zero to <b>lock</b>. It always ends closed.</div>
+<div class="hint"><b>TURN</b> sets the limit only - <b>PRESS</b> for a quick rinse - <b>PULL</b> for a 3-min wash - turn back to zero to <b>lock</b> - <b>E</b> / <b>EXPLODE</b> pulls the model apart so you can see every part. It always ends closed.</div>
 <div class="draglabel" id="dragLabel">TURN: 50%</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -200,6 +208,7 @@ var S={
   usedRun:0, usedTot:0,
   speed:1, xray:true, sound:true,
   holdRinse:false, everStarted:false,
+  explode:0, explodeT:0,
   knobRot:0, pressed:0, pulled:0, lastStep:-1
 };
 var coachOpen=true, moved=false, tipV=new THREE.Vector3();
@@ -411,6 +420,62 @@ var pulseRing=new THREE.Mesh(new THREE.TorusGeometry(2.5,0.08,10,48),
   new THREE.MeshBasicMaterial({color:0x4db8ff,transparent:true,opacity:0.8}));
 pulseRing.rotation.x=Math.PI/2; pulseRing.position.set(0,20.15,0); tap.add(pulseRing);
 
+/* ---------------- EXPLODE view: pull the whole model apart ----------------
+   Pure display state - explode never touches water numbers, timers or valves.
+   Objects with animated positions (knob, poppet, plungers) get their explode
+   offset added where they are animated; everything else rides the EXP table. */
+var EXP=[
+  [flange,      0, -2.2],
+  [shank,       0, -2.0],
+  [waterway,    0, -2.0],
+  [head,        0,  0.8],
+  [spoutTube,   0,  2.2],
+  [aerRing,     0,  2.2],
+  [limSeat,     0, -0.6],
+  [limiter,     0, -2.6],
+  [driveShaft,  0, -1.6],
+  [seat,        0,  3.2],
+  [closeSpring, 0,  2.6],
+  [dashBody,   -3.6,  1.2],
+  [washBody,    3.6, -0.4],
+  [latch,      -2.6,  4.6],
+  [headCap,     0,  6.0]
+];
+EXP.forEach(function(p){
+  p[0].userData.ex0=p[0].position.x;
+  p[0].userData.ey0=p[0].position.y;
+});
+
+var expGrp=document.createElement('div'); expGrp.id='expLabels'; document.body.appendChild(expGrp);
+var expLabels=[
+  {t:'KNOB - press / pull / turn',            c:'#d8dde2', o:knob,       dy:3.8},
+  {t:'SERVICE LID - 3 screws, poppet seat',   c:'#d8dde2', o:headCap,    dy:3.0},
+  {t:'SPOUT + AERATOR',                       c:'#d8dde2', o:spoutTube,  dy:2.6},
+  {t:'HEAD DRUM - the one cartridge shell',   c:'#d8dde2', o:head,       dy:2.8},
+  {t:'POPPET + SPRING - the real open/close', c:'#aab3bd', o:poppet,     dy:2.6},
+  {t:'SHORT DASHPOT - shuts a rinse in ~8 s', c:'#d4a017', o:dashBody,   dy:2.0},
+  {t:'LONG DASHPOT - shuts a wash in ~3 min', c:'#b98a2f', o:washBody,   dy:2.4},
+  {t:'LATCH - holds the wash open',           c:'#cc4444', o:latch,      dy:2.0},
+  {t:'FLOW LIMITER - your turn',              c:'#2f8f83', o:limiter,    dy:-2.6},
+  {t:'DRIVE SHAFT - turn travels here only',  c:'#aab3bd', o:driveShaft, dy:-2.4},
+  {t:'PLAIN COLUMN - just a water tube',      c:'#8fa0b5', o:shank,      dy:-2.6},
+  {t:'FLANGE + G1/2 TAIL - swaps like any tap',c:'#b08d57',o:flange,     dy:2.4}
+];
+expLabels.forEach(function(L){
+  var d=document.createElement('div'); d.className='explabel'; L.el=d;
+  d.innerHTML='<span class="ldot" style="background:'+L.c+'"></span>'+L.t;
+  expGrp.appendChild(d);
+});
+
+function setExplode(on){
+  S.explodeT=on?1:0;
+  var b=document.getElementById('bExplode');
+  b.textContent='EXPLODE: '+(on?'ON':'OFF');
+  b.classList.toggle('on',on);
+  if(on&&!S.xray){ S.xray=true; applyXray(); }   // ghost shell so the parts stay visible
+}
+
+
 /* ---------------- water stream ---------------- */
 var streamGrp=new THREE.Group(); scene.add(streamGrp);
 var stream=new THREE.Mesh(new THREE.CylinderGeometry(0.55,0.68,14.6,16,1,true),M.water);
@@ -528,6 +593,7 @@ document.getElementById('deckLock').onclick=function(){ ac(); lockAll(); };
 document.getElementById('deckStop').onclick=function(){ ac(); closeAll(false); };
 document.getElementById('coachOk').onclick=function(){ dismissCoach(); ac(); };
 document.getElementById('bXray').onclick=function(){ S.xray=!S.xray; applyXray(); };
+document.getElementById('bExplode').onclick=function(){ setExplode(S.explodeT<0.5); ac(); sClick(); };
 document.getElementById('bSound').onclick=function(){
   S.sound=!S.sound;
   this.textContent=S.sound?'SOUND: ON':'SOUND: OFF';
@@ -550,6 +616,7 @@ window.addEventListener('keydown',function(ev){
   else if(ev.key==='l'||ev.key==='L') lockAll();
   else if(ev.key==='ArrowRight') setTurn(S.frac+0.08);
   else if(ev.key==='ArrowLeft') setTurn(S.frac-0.08);
+  else if(ev.key==='e'||ev.key==='E'){ setExplode(S.explodeT<0.5); }
   else if((ev.key==='0'||ev.key==='Escape')&&S.mode!=='closed') closeAll(false);
 });
 
@@ -662,6 +729,23 @@ function animate(now){
     S.flow=0; tickAcc=0.9;
   }
 
+  // explode easing + part separation (display only)
+  S.explode+=(S.explodeT-S.explode)*Math.min(1,6*dt);
+  if(S.explode>0.001){
+    var eX=S.explode;
+    EXP.forEach(function(p){
+      p[0].position.y=p[0].userData.ey0+p[2]*eX;
+      if(p[1]) p[0].position.x=p[0].userData.ex0+p[1]*eX;
+    });
+  }
+  if(Math.abs(S.explodeT-S.explode)>0.01){
+    var wantY=10.3+7.0*S.explode, wantR=44+20*S.explode;
+    camT.target.y+=(wantY-camT.target.y)*0.12;
+    camT.r+=(wantR-camT.r)*0.12;
+    placeCam();
+  }
+  tap.position.y=4.5*S.explode;   // lift the whole tap out of the basin for inspection
+
   // smooth animations
   var vT=(S.mode==='closed')?0:1;
   S.valveOpen+=(vT-S.valveOpen)*Math.min(1,(S.mode==='closed'?22:14)*dt);
@@ -670,19 +754,21 @@ function animate(now){
   var rotT=S.frac*1.5*Math.PI*2;
   S.knobRot+=(rotT-S.knobRot)*Math.min(1,12*dt);
 
-  knob.position.y=20.0+0.9*S.pulled-0.5*S.pressed;
+  knob.position.y=20.0+0.9*S.pulled-0.5*S.pressed+9.5*S.explode;
   knob.rotation.y=S.knobRot;
   limiter.rotation.y=S.knobRot*1.2;
   driveShaft.rotation.y=S.knobRot;
-  poppet.position.y=16.6+S.valveOpen*0.55;
+  poppet.position.y=16.6+S.valveOpen*0.55+3.6*S.explode;
   closeSpring.scale.y=1-0.2*S.valveOpen;
-  dashPlunger.position.y=17.5+S.valveOpen*0.7;
+  dashPlunger.position.y=17.5+S.valveOpen*0.7+1.2*S.explode;
+  dashPlunger.position.x=-1.5-2.2*S.explode;
   var wFrac=(S.mode==='wash')?S.remaining/S.totalWash:0;
-  washPlunger.position.y=15.8+S.pulled*1.2-(S.pulled?wFrac*1.6:0);
+  washPlunger.position.y=15.8+S.pulled*1.2-(S.pulled?wFrac*1.6:0)-0.4*S.explode;
+  washPlunger.position.x=1.5+2.2*S.explode;
   latch.rotation.z+=(((S.mode==='wash')?0:0.55)-latch.rotation.z)*Math.min(1,16*dt);
 
-  // water stream
-  var showWater=S.valveOpen>0.06&&S.flow>0.05;
+  // water stream (hidden while exploded - it is a cutaway view)
+  var showWater=S.valveOpen>0.06&&S.flow>0.05&&S.explode<0.2;
   streamGrp.visible=showWater;
   if(showWater){
     stream.scale.y=S.valveOpen; core.scale.y=S.valveOpen;
@@ -697,15 +783,26 @@ function animate(now){
   }
 
   // pulsing ring + floating knob tip
-  pulseRing.visible=(S.mode==='closed')&&!S.everStarted;
+  pulseRing.visible=(S.mode==='closed')&&!S.everStarted&&S.explode<0.05;
   if(pulseRing.visible){
     var pk=1+0.07*Math.sin(tGlobal*4.2);
     pulseRing.scale.set(pk,pk,1);
     pulseRing.material.opacity=0.45+0.32*(0.5+0.5*Math.sin(tGlobal*4.2));
   }
+  // exploded-part labels
+  var showExp=S.explode>0.55;
+  expGrp.style.display=showExp?'block':'none';
+  if(showExp){
+    expLabels.forEach(function(L){
+      L.o.updateWorldMatrix(true,false);
+      tipV.set(0,L.dy,0); L.o.localToWorld(tipV); tipV.project(camera);
+      L.el.style.left=((tipV.x*0.5+0.5)*window.innerWidth)+'px';
+      L.el.style.top=((-tipV.y*0.5+0.5)*window.innerHeight)+'px';
+    });
+  }
   var tip=document.getElementById('knobTip');
   if(tip){
-    var show=(S.mode==='closed')&&!S.everStarted;
+    var show=(S.mode==='closed')&&!S.everStarted&&S.explode<0.05;
     tip.style.display=show?'block':'none';
     if(show){
       tap.updateWorldMatrix(true,false);
@@ -738,6 +835,7 @@ uiStatus();
 /* test hooks */
 window.APP={S:S,startRinse:startRinse,startWash:startWash,setTurn:setTurn,
             lockAll:lockAll,closeAll:closeAll,flowNow:flowNow,releaseHold:releaseHold,
+            setExplode:setExplode,
             RINSE_MAX:RINSE_MAX,WASH_SECS:WASH_SECS,QMAX:QMAX};
 })();
 </script>

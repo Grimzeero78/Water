@@ -20,19 +20,37 @@ Two valves sit **in series** inside **one compact head cartridge** on top of the
 In the simulator: **drag the knob sideways** (or use the slider) to set the limit,
 **click** it for the 8-second rinse, **drag down and hold** for water-while-held,
 **drag up** for the 3-minute wash. Keys: `1` press · `2` pull · `←/→` turn ·
-`L` lock · `0` stop. Ghost view (default) shows the limiter, poppet, both dashpots
-and the latch working inside. Buttons: PRESS / PULL / LOCK / STOP.
+`L` lock · `0` stop · **`E` EXPLODE** — pulls the whole model apart so you can
+see every part with floating labels. Ghost view (default) shows the limiter,
+poppet, both dashpots and the latch working inside. Buttons: PRESS / PULL / LOCK /
+STOP / EXPLODE.
 
 Worst case at an 8 L/min limit: one 3-minute wash ≈ **24 L**. A normal tap left
 running for an hour wastes about **480 L**.
+
+## Read the docs here on GitHub (no PDF needed)
+
+The full documentation lives in `docs/` as plain Markdown — open these links
+directly on github.com, they render like wiki pages:
+
+| Doc | What's inside |
+|---|---|
+| **[01 - How It Works](docs/01-HOW-IT-WORKS.md)** | The two-valve interlock, the head cartridge, the dashpot timers, the latch — with exploded-view pictures |
+| **[02 - Build Guide](docs/02-BUILD-GUIDE.md)** | Print settings, assembly steps, fitting = swapping the old tap, commissioning, troubleshooting |
+| **[03 - Parts List](docs/03-PARTS-LIST.md)** | Every printed part and every bought part — exact specs to ask for at a hardware shop |
+| **[04 - Facts and Sources](docs/04-FACTS-AND-SOURCES.md)** | Every number in the project traced to a published standard (EPAct 1992, EPA WaterSense, Water UK, Nairobi Water tariff, G1/2 BSP tables) with links |
+
+(`build-guide.pdf` still exists in the repo root for printing, but the docs
+above are the maintained, GitHub-readable version.)
 
 ## What's in this repo
 
 | File | What it is |
 |---|---|
-| `index.html` | Interactive 3D simulator — press / pull / turn with the series-valve safety, ghost view, water-usage readouts |
+| `index.html` | Interactive 3D simulator — press / pull / turn with the series-valve safety, ghost view, **exploded view with part labels**, water-usage readouts |
 | `prototype.html` | All 6 printable parts, exploded / assembled, viewable in any browser |
 | `stl/` | 3D-printable STL parts: 1 wet body, 2 top knob, 3 flow limiter, 4 poppet valve, 5 short dashpot kit, 6 long dashpot kit + latch |
+| `docs/` | GitHub-readable documentation: how it works, build guide, parts list, facts & sources |
 | `build-guide.pdf` | Workshop manual: tools, materials, build steps, fitting, calibration, troubleshooting, savings |
 | `TapTamer.scad` | Parametric OpenSCAD source model (millimetres) |
 | `guide-assets/` | Diagrams and renders used by the guide |
