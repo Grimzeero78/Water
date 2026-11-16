@@ -30,18 +30,17 @@ running for an hour wastes about **480 L**.
 
 ## Read the docs here on GitHub (no PDF needed)
 
-The full documentation lives in `docs/` as plain Markdown — open these links
-directly on github.com, they render like wiki pages:
+The full documentation lives in `docs/` as plain Markdown with every diagram
+embedded - open these links directly on github.com, they render like wiki
+pages, on a phone too (PDF previews often fail there, so there is no PDF in
+this repo at all):
 
 | Doc | What's inside |
 |---|---|
-| **[01 - How It Works](docs/01-HOW-IT-WORKS.md)** | The two-valve interlock, the head cartridge, the dashpot timers, the latch — with exploded-view pictures |
+| **[01 - How It Works](docs/01-HOW-IT-WORKS.md)** | The two-valve interlock, the head cartridge, the dashpot timers, the latch — with exploded-view pictures and diagrams |
 | **[02 - Build Guide](docs/02-BUILD-GUIDE.md)** | Print settings, assembly steps, fitting = swapping the old tap, commissioning, troubleshooting |
 | **[03 - Parts List](docs/03-PARTS-LIST.md)** | Every printed part and every bought part — exact specs to ask for at a hardware shop |
 | **[04 - Facts and Sources](docs/04-FACTS-AND-SOURCES.md)** | Every number in the project traced to a published standard (EPAct 1992, EPA WaterSense, Water UK, Nairobi Water tariff, G1/2 BSP tables) with links |
-
-(`build-guide.pdf` still exists in the repo root for printing, but the docs
-above are the maintained, GitHub-readable version.)
 
 ## What's in this repo
 
@@ -51,14 +50,15 @@ above are the maintained, GitHub-readable version.)
 | `prototype.html` | All 6 printable parts, exploded / assembled, viewable in any browser |
 | `stl/` | 3D-printable STL parts: 1 wet body, 2 top knob, 3 flow limiter, 4 poppet valve, 5 short dashpot kit, 6 long dashpot kit + latch |
 | `docs/` | GitHub-readable documentation: how it works, build guide, parts list, facts & sources |
-| `build-guide.pdf` | Workshop manual: tools, materials, build steps, fitting, calibration, troubleshooting, savings |
 | `TapTamer.scad` | Parametric OpenSCAD source model (millimetres) |
-| `guide-assets/` | Diagrams and renders used by the guide |
+| `guide-assets/` | Diagrams and renders embedded by the docs |
 
 ## How it works (pure mechanics)
 
 Everything is packed into **one head cartridge** on top of a plain column — like the
 inside of a clock, except there is no clockwork: just valves, springs and oil dashpots.
+
+![Turn = limit only · Press = 8 s rinse · Pull = 3 min wash · Always ends closed](guide-assets/d2_cycle.png)
 
 1. **Turn = limit only.** The knob spins a needle cartridge on its own seat at the base
    of the head. It can never let water through by itself — it only decides how wide the

@@ -1,8 +1,8 @@
-# 02 - Build Guide (GitHub-friendly)
+# 02 - Build Guide
 
-This is the same content as `build-guide.pdf` in the repo root, in a page you
-can read directly on GitHub. Print settings match `TapTamer.scad` and the six
-files in `stl/`.
+The one and only build guide - plain Markdown, so it reads directly on GitHub,
+including on phones where PDF previews often fail. Print settings match
+`TapTamer.scad` and the six files in `stl/`.
 
 ![Exploded view - front](images/exploded-front.png)
 ![Exploded view - side](images/exploded-side.png)
@@ -65,6 +65,8 @@ as one unit on the bench. That is the whole servicing story.
 
 It is a complete replacement tap, so fitting is exactly what your old tap went
 through, using the same parts sold in every plumbing aisle ("tap fixing kit"):
+
+![The three fitting steps](../guide-assets/d3_install.png)
 
 1. Isolate the water (angle valve under the basin / stop-cock).
 2. Unhook the old tap's flexible hose, undo its back-nut, lift the old tap out.

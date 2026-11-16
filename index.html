@@ -84,11 +84,30 @@
   .knobtip:after{content:'';position:absolute;left:50%;top:99%;transform:translateX(-50%);
     border:7px solid transparent;border-top-color:#f0b429}
   #expLabels{position:fixed;inset:0;pointer-events:none;display:none;z-index:9}
-  .explabel{position:absolute;transform:translate(-50%,-100%);background:rgba(10,14,20,.88);
-    border:1px solid #2a3644;border-radius:6px;padding:3px 9px;font-size:10px;font-weight:600;
-    color:#cfe0f0;white-space:nowrap;margin-top:-8px;letter-spacing:.3px}
+  #expLines{position:absolute;inset:0;width:100%;height:100%}
+  .explabel{position:absolute;transform:translateY(-50%);background:rgba(10,14,20,.92);
+    border:1px solid #2a3644;border-radius:6px;padding:3px 8px;font-size:10px;font-weight:600;
+    color:#cfe0f0;white-space:nowrap;letter-spacing:.3px;max-width:42vw;overflow:hidden;
+    text-overflow:ellipsis}
+  .explabel.L{left:10px}
   .explabel .ldot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;
     vertical-align:-1px}
+  @media (max-width:640px){ .explabel{font-size:9px;padding:2px 5px;max-width:46vw} .explabel.L{left:6px} }
+  .btn.info{display:none}
+  @media (max-width:760px){
+    .tag{display:none}
+    .logo{font-size:15px}
+    .btn{font-size:11px;padding:6px 8px}
+    .panel{display:none}
+    .panel.open{display:block;top:56px;left:6px;right:6px;width:auto;max-height:calc(100vh - 150px);
+      overflow-y:auto;z-index:13}
+    .btn.info{display:inline-block}
+    .deckbtn{min-width:82px;padding:10px 8px;border-radius:12px}
+    .deckbtn b{font-size:14px}
+    .deckbtn small{font-size:8.5px}
+    .legend{max-width:240px;font-size:10px;bottom:110px;left:8px;padding:8px 10px}
+    .hint{display:none}
+  }
   .coach{position:fixed;inset:0;background:rgba(5,10,16,.7);z-index:20;display:flex;
     align-items:center;justify-content:center}
   .coach .card{width:min(480px,92vw);background:#161b22;border:1px solid #3a4655;border-radius:14px;
@@ -139,13 +158,14 @@
   <div class="spacer"></div>
   <button class="btn on" id="bXray">SHELL: GHOST</button>
   <button class="btn" id="bExplode">EXPLODE: OFF</button>
+  <button class="btn info" id="bInfo">INFO</button>
   <button class="btn on" id="bSound">SOUND: ON</button>
   <button class="btn spd on" data-s="1">1&times;</button>
   <button class="btn spd" data-s="10">10&times;</button>
   <button class="btn spd" data-s="60">60&times;</button>
 </div>
 
-<div class="panel">
+<div class="panel" id="panel">
   <div class="status closed" id="statusBox">
     <div class="mode">VALVE</div>
     <div class="big" id="bigState">READY</div>
@@ -446,26 +466,52 @@ EXP.forEach(function(p){
   p[0].userData.ey0=p[0].position.y;
 });
 
+/* Labels live in ONE column on the left screen edge (like an engineering
+   exploded diagram) with thin leader lines drawn to each part - so a label
+   can never sit on top of the model and hide it. */
 var expGrp=document.createElement('div'); expGrp.id='expLabels'; document.body.appendChild(expGrp);
+var SVGNS='http://www.w3.org/2000/svg';
+var expSvg=document.createElementNS(SVGNS,'svg'); expSvg.id='expLines'; expGrp.appendChild(expSvg);
 var expLabels=[
-  {t:'KNOB - press / pull / turn',            c:'#d8dde2', o:knob,       dy:3.8},
-  {t:'SERVICE LID - 3 screws, poppet seat',   c:'#d8dde2', o:headCap,    dy:3.0},
-  {t:'SPOUT + AERATOR',                       c:'#d8dde2', o:spoutTube,  dy:2.6},
-  {t:'HEAD DRUM - the one cartridge shell',   c:'#d8dde2', o:head,       dy:2.8},
-  {t:'POPPET + SPRING - the real open/close', c:'#aab3bd', o:poppet,     dy:2.6},
-  {t:'SHORT DASHPOT - shuts a rinse in ~8 s', c:'#d4a017', o:dashBody,   dy:2.0},
-  {t:'LONG DASHPOT - shuts a wash in ~3 min', c:'#b98a2f', o:washBody,   dy:2.4},
-  {t:'LATCH - holds the wash open',           c:'#cc4444', o:latch,      dy:2.0},
-  {t:'FLOW LIMITER - your turn',              c:'#2f8f83', o:limiter,    dy:-2.6},
-  {t:'DRIVE SHAFT - turn travels here only',  c:'#aab3bd', o:driveShaft, dy:-2.4},
-  {t:'PLAIN COLUMN - just a water tube',      c:'#8fa0b5', o:shank,      dy:-2.6},
-  {t:'FLANGE + G1/2 TAIL - swaps like any tap',c:'#b08d57',o:flange,     dy:2.4}
+  {t:'KNOB - press / pull / turn',       c:'#d8dde2', o:knob,       dy:3.8},
+  {t:'SERVICE LID - 3 screws',           c:'#d8dde2', o:headCap,    dy:3.0},
+  {t:'SPOUT + AERATOR',                  c:'#d8dde2', o:spoutTube,  dy:2.6},
+  {t:'HEAD DRUM - the cartridge',        c:'#d8dde2', o:head,       dy:2.8},
+  {t:'POPPET + SPRING - the valve',      c:'#aab3bd', o:poppet,     dy:2.6},
+  {t:'SHORT DASHPOT - 8 s rinse',        c:'#d4a017', o:dashBody,   dy:2.0},
+  {t:'LONG DASHPOT - 3 min wash',        c:'#b98a2f', o:washBody,   dy:2.4},
+  {t:'LATCH - holds the wash open',      c:'#cc4444', o:latch,      dy:2.0},
+  {t:'FLOW LIMITER - your turn',         c:'#2f8f83', o:limiter,    dy:-2.6},
+  {t:'DRIVE SHAFT - turn only',          c:'#aab3bd', o:driveShaft, dy:-2.4},
+  {t:'PLAIN COLUMN - water tube',        c:'#8fa0b5', o:shank,      dy:-2.6},
+  {t:'FLANGE + G1/2 TAIL',               c:'#b08d57', o:flange,     dy:2.4}
 ];
 expLabels.forEach(function(L){
-  var d=document.createElement('div'); d.className='explabel'; L.el=d;
+  var d=document.createElement('div'); d.className='explabel L'; L.el=d;
   d.innerHTML='<span class="ldot" style="background:'+L.c+'"></span>'+L.t;
   expGrp.appendChild(d);
+  L.line=document.createElementNS(SVGNS,'line');
+  L.line.setAttribute('stroke',L.c); L.line.setAttribute('stroke-opacity','0.72');
+  L.line.setAttribute('stroke-width','1');
+  expSvg.appendChild(L.line);
+  L.dot=document.createElementNS(SVGNS,'circle');
+  L.dot.setAttribute('r','2.6'); L.dot.setAttribute('fill',L.c);
+  expSvg.appendChild(L.dot);
+  L.w=0; L.ly=0;
 });
+var expLastW=0, expLastH=0, legendEl=document.getElementById('legend');
+
+/* On phones the info panel would cover the whole screen (and the exploded
+   model), so it hides behind an INFO button; on desktop it just steps aside
+   while the model is exploded. */
+var panelEl=document.getElementById('panel'), bInfo=document.getElementById('bInfo');
+function applyPanel(){
+  if(!panelEl) return;
+  var exp=S.explode>0.5, mob=window.innerWidth<=760;
+  if(mob){ panelEl.style.display=''; panelEl.classList.toggle('open', !!(bInfo&&bInfo.classList.contains('on'))&&!exp); }
+  else{ panelEl.style.display=exp?'none':'block'; }
+}
+if(bInfo) bInfo.onclick=function(){ bInfo.classList.toggle('on'); applyPanel(); };
 
 function setExplode(on){
   S.explodeT=on?1:0;
@@ -789,15 +835,38 @@ function animate(now){
     pulseRing.scale.set(pk,pk,1);
     pulseRing.material.opacity=0.45+0.32*(0.5+0.5*Math.sin(tGlobal*4.2));
   }
-  // exploded-part labels
+  // exploded-part labels: left-edge legend + leader lines (never covers the model)
   var showExp=S.explode>0.55;
   expGrp.style.display=showExp?'block':'none';
+  if(legendEl) legendEl.style.display=(S.xray&&!showExp)?'block':'none';
+  applyPanel();
   if(showExp){
-    expLabels.forEach(function(L){
+    var W=window.innerWidth, H=window.innerHeight, TOP=58, BOT=46, GAP=26;
+    if(W!==expLastW||H!==expLastH){                       // re-measure label widths on resize
+      expLabels.forEach(function(L){ L.w=L.el.offsetWidth; });
+      expLastW=W; expLastH=H;
+    }
+    expLabels.forEach(function(L){                        // project each anchor to screen
       L.o.updateWorldMatrix(true,false);
       tipV.set(0,L.dy,0); L.o.localToWorld(tipV); tipV.project(camera);
-      L.el.style.left=((tipV.x*0.5+0.5)*window.innerWidth)+'px';
-      L.el.style.top=((-tipV.y*0.5+0.5)*window.innerHeight)+'px';
+      L.ax=(tipV.x*0.5+0.5)*W; L.ay=(-tipV.y*0.5+0.5)*H;
+    });
+    var list=expLabels.slice().sort(function(a,b){return a.ay-b.ay;});
+    list[0].ly=Math.max(TOP,Math.min(H-BOT,list[0].ay));  // stack with minimum spacing
+    for(var li=1;li<list.length;li++) list[li].ly=Math.max(list[li].ay,list[li-1].ly+GAP);
+    if(list[list.length-1].ly>H-BOT){                     // overflow: shift the stack up
+      var sh=list[list.length-1].ly-(H-BOT);
+      for(var lj=list.length-1;lj>=0;lj--){
+        list[lj].ly=Math.max(TOP,list[lj].ly-sh);
+        if(lj<list.length-1&&list[lj].ly>list[lj+1].ly-GAP) list[lj].ly=list[lj+1].ly-GAP;
+      }
+    }
+    list.forEach(function(L){
+      L.el.style.top=L.ly+'px';
+      var ex=10+L.w+6;
+      L.line.setAttribute('x1',L.ax); L.line.setAttribute('y1',L.ay);
+      L.line.setAttribute('x2',ex);  L.line.setAttribute('y2',L.ly);
+      L.dot.setAttribute('cx',L.ax); L.dot.setAttribute('cy',L.ay);
     });
   }
   var tip=document.getElementById('knobTip');
@@ -836,6 +905,8 @@ uiStatus();
 window.APP={S:S,startRinse:startRinse,startWash:startWash,setTurn:setTurn,
             lockAll:lockAll,closeAll:closeAll,flowNow:flowNow,releaseHold:releaseHold,
             setExplode:setExplode,
+            view:function(th,ph,r){ if(th!==undefined)camT.theta=th*Math.PI/180;
+              if(ph!==undefined)camT.phi=ph; if(r!==undefined)camT.r=r; placeCam(); },
             RINSE_MAX:RINSE_MAX,WASH_SECS:WASH_SECS,QMAX:QMAX};
 })();
 </script>

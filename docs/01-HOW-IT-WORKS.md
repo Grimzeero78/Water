@@ -1,8 +1,9 @@
 # 01 - How TapTamer Works
 
 > Open the simulator and press **E** (or the **EXPLODE: ON** button) to pull the
-> model apart while you read this. Every part described here gets a floating
-> label in the exploded view.
+> model apart while you read this. Every part gets a named callout pinned to the
+> screen edge with a thin leader line pointing at the part - the labels never
+> sit on top of the model, so nothing hides anything.
 
 ![Exploded view - front](images/exploded-front.png)
 
@@ -41,6 +42,8 @@ spring-closed. To get water you must *press* or *pull* - actions that end.
 
 ## The three actions
 
+![The three actions and the lock](../guide-assets/d2_cycle.png)
+
 | Action | What happens | How it ends |
 |---|---|---|
 | **Press** the knob down | Lifts the poppet for a quick rinse (about 8 s) | A short oil dashpot bleeds itself and the spring closes the valve |
@@ -74,6 +77,11 @@ mechanical cartridge:
 The column below is a **plain water tube** - a 16 mm bore with nothing inside
 it. There is nothing to assemble down there, nothing to go wrong down there,
 and nothing hanging on the outside of the pipe.
+
+The simulator's ghost view, running a wash - the whole cartridge is visible
+inside the head, the column stays empty:
+
+![Ghost view of the head cartridge](../guide-assets/d1_cutaway.png)
 
 ## How the oil dashpots do the timing (no clockwork)
 
